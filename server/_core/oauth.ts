@@ -11,8 +11,7 @@ function getQueryParam(req: Request, key: string): string | undefined {
 }
 
 export function registerOAuthRoutes(app: Express) {
-  // Mock login for development with custom user and role
-  app.get("/api/auth/mock", async (req: Request, res: Response) => {
+  const handler = async (req: Request, res: Response) => {
     if (ENV.isProduction) {
       res.status(403).send("Mock login only available in development");
       return;
@@ -57,5 +56,9 @@ export function registerOAuthRoutes(app: Express) {
       console.error("[Auth] Mock login failed:", error);
       res.status(500).json({ error: "Mock login failed", details: error instanceof Error ? error.message : String(error) });
     }
-  });
+  };
+
+  // Support both with and without /api prefix
+  app.get("/api/auth/mock", handler);
+  app.get("/auth/mock", handler);
 }

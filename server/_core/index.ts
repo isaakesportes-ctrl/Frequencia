@@ -30,24 +30,30 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 
 export const app = express();
 
+// Configure basic middlewares synchronously
+app.use(cookieParser());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+// Register routes synchronously
+registerOAuthRoutes(app);
+
+// tRPC API middleware
+const trpcMiddleware = createExpressMiddleware({
+  router: appRouter,
+  createContext,
+  onError({ error }) {
+    console.error("[TRPC Error Formatter]", error);
+  },
+});
+
+// Support both with and without /api prefix for Vercel flexibility
+app.use("/api/trpc", trpcMiddleware);
+app.use("/trpc", trpcMiddleware);
+
 async function startServer() {
-  app.use(cookieParser());
   const server = createServer(app);
-  // Configure body parser with larger size limit for file uploads
-  app.use(express.json({ limit: "50mb" }));
-  app.use(express.urlencoded({ limit: "50mb", extended: true }));
-  registerOAuthRoutes(app);
-  // tRPC API
-  app.use(
-    "/api/trpc",
-    createExpressMiddleware({
-      router: appRouter,
-      createContext,
-      onError({ error }) {
-        console.error("[TRPC Error Formatter]", error);
-      },
-    })
-  );
+  
   // development mode uses Vite, production mode uses static files
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
@@ -70,6 +76,7 @@ async function startServer() {
   }
 }
 
+// Still call startServer for development and non-Vercel environments
 startServer().catch(console.error);
 
 export default app;
