@@ -1,4 +1,5 @@
-import express, { type Express } from "express";
+import express from "express";
+import type { Express, Request, Response, NextFunction } from "express";
 import fs from "fs";
 import { type Server } from "http";
 import { nanoid } from "nanoid";
@@ -23,6 +24,11 @@ export async function setupVite(app: Express, server: Server) {
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
+
+    // Skip API routes - let them be handled by their respective handlers
+    if (url.startsWith("/api/")) {
+      return next();
+    }
 
     try {
       const clientTemplate = path.resolve(

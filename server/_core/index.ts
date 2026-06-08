@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express from "express";
+import express, { Express, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import { createServer } from "http";
 import net from "net";
@@ -51,7 +51,7 @@ async function startServer() {
   // development mode uses Vite, production mode uses static files
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
-  } else {
+  } else if (!process.env.VERCEL) {
     serveStatic(app);
   }
 
