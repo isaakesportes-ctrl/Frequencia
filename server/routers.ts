@@ -46,7 +46,12 @@ export const appRouter = router({
   // Users routes
   users: router({
     list: protectedProcedure.query(async () => {
-      return await getUsers();
+      try {
+        return await getUsers();
+      } catch (error: any) {
+        console.error("[TRPC Server Error] users.list:", error);
+        throw error;
+      }
     }),
     create: protectedProcedure
       .input(z.object({
@@ -146,7 +151,12 @@ export const appRouter = router({
   // Professores routes
   professores: router({
     list: publicProcedure.query(async () => {
-      return await getAllProfessores();
+      try {
+        return await getAllProfessores();
+      } catch (error: any) {
+        console.error("[TRPC Server Error] professores.list:", error);
+        throw error;
+      }
     }),
     
     aulas: publicProcedure

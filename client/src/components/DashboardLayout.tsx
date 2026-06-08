@@ -133,12 +133,32 @@ function DashboardLayoutContent({
                 <span className="text-[6px] font-black uppercase tracking-[0.15em] text-slate-400">Dept</span>
               </div>
             </div>
-            <button 
-              onClick={() => setOpenMobile(true)}
-              className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
-            >
-              <PanelLeft className="h-5 w-5 text-slate-600 dark:text-slate-400" />
-            </button>
+            <div className="flex items-center gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+                    <Avatar className="h-full w-full">
+                      <AvatarFallback className="text-[10px] font-black">
+                        {user?.name?.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl p-1 shadow-2xl border-slate-100 dark:border-slate-800">
+                  <div className="px-3 py-2 border-b border-slate-50 dark:border-slate-800 mb-1">
+                    <p className="text-xs font-heavy truncate">{user?.name}</p>
+                    <p className="text-[9px] font-bold text-blue-600 uppercase tracking-widest">{user?.role}</p>
+                  </div>
+                  <DropdownMenuItem
+                    onClick={() => logout()}
+                    className="flex items-center gap-2 px-3 py-2 text-red-600 dark:text-red-400 font-heavy text-xs rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-all cursor-pointer"
+                  >
+                    <LogOut className="h-3.5 w-3.5" />
+                    Sair da Conta
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </header>
         )}
 
@@ -255,7 +275,7 @@ function DashboardLayoutContent({
         )}
 
         <SidebarInset className="flex-1 bg-[#f5f5f7] dark:bg-black overflow-y-auto">
-          <div className="h-full w-full p-4 md:p-8">
+          <div className={`h-full w-full p-4 md:p-8 ${isMobile ? "pb-24" : ""}`}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={location}
@@ -270,6 +290,37 @@ function DashboardLayoutContent({
             </AnimatePresence>
           </div>
         </SidebarInset>
+
+        {/* Mobile Bottom Navigation */}
+        {isMobile && (
+          <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border-t border-slate-100 dark:border-slate-800 flex items-center justify-around px-2 z-50 pb-safe">
+            {menuItems.map((item) => {
+              const isActive = location === item.path;
+              return (
+                <button
+                  key={item.path}
+                  onClick={() => setLocation(item.path)}
+                  className={`flex flex-col items-center justify-center gap-1 min-w-[64px] h-full transition-all duration-300 ${
+                    isActive ? "text-[#0071e3]" : "text-slate-400 hover:text-slate-600"
+                  }`}
+                >
+                  <div className={`p-1.5 rounded-xl transition-all duration-300 ${isActive ? "bg-blue-50 dark:bg-blue-900/20" : ""}`}>
+                    <item.icon className={`h-5 w-5 ${isActive ? "scale-110" : ""}`} />
+                  </div>
+                  <span className={`text-[9px] font-black tracking-tight ${isActive ? "opacity-100" : "opacity-60"}`}>
+                    {item.label}
+                  </span>
+                  {isActive && (
+                    <motion.div
+                      layoutId="bottom-nav-active"
+                      className="absolute bottom-1 w-1 h-1 rounded-full bg-[#0071e3]"
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+        )}
       </div>
     </>
   );

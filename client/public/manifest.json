@@ -1,0 +1,16 @@
+{
+  "name": "Sistema de Agendamento de Aulas",
+  "short_name": "Agendamento",
+  "description": "Sistema de agendamento de aulas esportivas",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0071e3",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2693/2693507.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -45,51 +45,58 @@ const userRoles = new Map<number, "user" | "admin" | "monitor">();
 let manualAulas = new Map<number, Aula>();
 let manualAulaCounter = 10000; // Começa alto para não conflitar com planilha
 
+const safeSplit = (val: any, separator: string) => String(val || "").split(separator);
+
 export async function getUsers() {
-  await syncFromSpreadsheet();
-  const users = Array.from(mockUsers.values());
-  
-  // Add professors who are not already in mockUsers
-  cachedProfessores.forEach(prof => {
-    const isAlreadyUser = users.some(u => u.name === prof.nome || u.openId === `prof-${prof.id}`);
-    if (!isAlreadyUser) {
-      const id = prof.id + 1000;
-      // Senha padrão: primeiro nome em minúsculo ou "123"
-      const defaultPass = prof.nome.split(" ")[0].toLowerCase();
+  try {
+    await syncFromSpreadsheet();
+    const users = Array.from(mockUsers.values());
+    
+    // Add professors who are not already in mockUsers
+    cachedProfessores.forEach(prof => {
+      const isAlreadyUser = users.some(u => u.name === prof.nome || u.openId === `prof-${prof.id}`);
+      if (!isAlreadyUser) {
+        const id = prof.id + 1000;
+        // Senha padrão: primeiro nome em minúsculo ou "123"
+        const defaultPass = safeSplit(prof.nome || "usuario", " ")[0].toLowerCase();
+        
+        users.push({
+          id,
+          openId: `prof-${prof.id}`,
+          name: editedProfessorNames.get(prof.id) || prof.nome || "Usuário",
+          email: null,
+          password: userPasswords.get(id) || defaultPass,
+          role: userRoles.get(id) || "user",
+          loginMethod: "password",
+          createdAt: prof.createdAt || new Date(),
+          updatedAt: prof.updatedAt || new Date(),
+          lastSignedIn: prof.updatedAt || new Date()
+        });
+      }
+    });
+    
+    // Adiciona senhas para usuários que já estão no mockUsers (exceto Master que já tem)
+    return users.map(u => {
+      const profIdMatch = u.openId?.match(/^prof-(\d+)$/);
+      const displayName = profIdMatch ? (editedProfessorNames.get(parseInt(profIdMatch[1])) || u.name) : u.name;
+      const role = userRoles.get(u.id) || u.role;
       
-      users.push({
-        id,
-        openId: `prof-${prof.id}`,
-        name: editedProfessorNames.get(prof.id) || prof.nome,
-        email: null,
-        password: userPasswords.get(id) || defaultPass,
-        role: userRoles.get(id) || "user",
-        loginMethod: "password",
-        createdAt: prof.createdAt,
-        updatedAt: prof.updatedAt,
-        lastSignedIn: prof.updatedAt
-      });
-    }
-  });
-  
-  // Adiciona senhas para usuários que já estão no mockUsers (exceto Master que já tem)
-  return users.map(u => {
-    const profIdMatch = u.openId.match(/^prof-(\d+)$/);
-    const displayName = profIdMatch ? (editedProfessorNames.get(parseInt(profIdMatch[1])) || u.name) : u.name;
-    const role = userRoles.get(u.id) || u.role;
-    
-    // Se o nome no mockUsers for diferente do displayName (nome editado), atualiza o mockUsers
-    if (u.id < 1000 && u.name !== displayName) {
-      mockUsers.set(u.id, { ...u, name: displayName || u.name });
-    }
-    
-    return {
-      ...u,
-      name: displayName,
-      role: u.id === 1 ? "admin" : role,
-      password: u.id === 1 ? u.password : (userPasswords.get(u.id) || u.password || u.name?.split(" ")[0].toLowerCase() || "123")
-    };
-  });
+      // Se o nome no mockUsers for diferente do displayName (nome editado), atualiza o mockUsers
+      if (u.id < 1000 && u.name !== displayName) {
+        mockUsers.set(u.id, { ...u, name: displayName || u.name });
+      }
+      
+      return {
+        ...u,
+        name: displayName || "Usuário",
+        role: u.id === 1 ? "admin" : (role || "user"),
+        password: u.id === 1 ? u.password : (userPasswords.get(u.id) || u.password || safeSplit(u.name || "", " ")[0]?.toLowerCase() || "123")
+      };
+    });
+  } catch (error) {
+    console.error("[getUsers] Error:", error);
+    return [];
+  }
 }
 
 export async function updateUserRole(id: number, newRole: "user" | "admin" | "monitor") {
@@ -195,6 +202,11 @@ async function syncFromSpreadsheet() {
       }
       const localId = newLocaisMap.get(localNome)!;
 
+      if (!professorNome) {
+        // Ignora ou trata professor sem nome
+        return;
+      }
+
       if (!newProfessoresMap.has(professorNome)) {
         newProfessoresMap.set(professorNome, profCounter++);
       }
@@ -206,13 +218,13 @@ async function syncFromSpreadsheet() {
       if (/^\d{1,2}$/.test(formattedHorario)) {
         formattedHorario = `${formattedHorario.padStart(2, '0')}:00`;
       } else if (/^\d{1,2}:\d{2}$/.test(formattedHorario)) {
-        formattedHorario = formattedHorario.split(':').map(p => p.padStart(2, '0')).join(':');
+        formattedHorario = safeSplit(formattedHorario, ':').map(p => p.padStart(2, '0')).join(':');
       }
 
       // Determine shift if not provided
       let turno = turnoRaw;
       if (!turno && formattedHorario.includes(':')) {
-        const hour = parseInt(formattedHorario.split(':')[0]);
+        const hour = parseInt(safeSplit(formattedHorario, ':')[0]);
         if (hour < 12) turno = 'Manhã';
         else if (hour < 18) turno = 'Tarde';
         else turno = 'Noite';
@@ -304,10 +316,10 @@ export async function getAulas(filters?: {
     if (filters.search) {
       const search = filters.search.toLowerCase();
       result = result.filter(a => 
-        a.atividade.toLowerCase().includes(search) || 
-        a.faixaEtaria.toLowerCase().includes(search) ||
-        a.professor?.nome.toLowerCase().includes(search) ||
-        a.local?.nome.toLowerCase().includes(search)
+        String(a.atividade || "").toLowerCase().includes(search) || 
+        String(a.faixaEtaria || "").toLowerCase().includes(search) ||
+        String(a.professor?.nome || "").toLowerCase().includes(search) ||
+        String(a.local?.nome || "").toLowerCase().includes(search)
       );
     }
   }
@@ -335,7 +347,7 @@ export async function getAllProfessores() {
   await syncFromSpreadsheet();
   return cachedProfessores.map(prof => {
     const id = prof.id + 1000;
-    const defaultPass = prof.nome.split(" ")[0].toLowerCase();
+    const defaultPass = safeSplit(prof.nome || "professor", " ")[0].toLowerCase();
     return {
       ...prof,
       password: userPasswords.get(id) || defaultPass,
