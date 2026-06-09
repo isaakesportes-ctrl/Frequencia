@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express, { Express, Request, Response, NextFunction } from "express";
+import express, { Application, Request, Response, NextFunction } from "express";
 import cookieParser from "cookie-parser";
 import { createServer } from "http";
 import net from "net";

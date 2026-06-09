@@ -1,5 +1,5 @@
 import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
-import { Request, Response, Express } from "express";
+import { Request, Response, Application } from "express";
 import * as db from "../db";
 import { getSessionCookieOptions } from "./cookies";
 import { sdk } from "./sdk";
@@ -10,7 +10,7 @@ function getQueryParam(req: Request, key: string): string | undefined {
   return typeof value === "string" ? value : undefined;
 }
 
-export function registerOAuthRoutes(app: Express) {
+export function registerOAuthRoutes(app: Application) {
   const handler = async (req: Request, res: Response) => {
     if (ENV.isProduction) {
       res.status(403).send("Mock login only available in development");
