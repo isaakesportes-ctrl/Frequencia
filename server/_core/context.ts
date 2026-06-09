@@ -1,11 +1,11 @@
-import type { Request, Response } from "express";
+import express from "express";
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import type { User } from "@shared/types";
 import { sdk } from "./sdk";
 
 export type TrpcContext = {
-  req: Request;
-  res: Response;
+  req: express.Request;
+  res: express.Response;
   user: User | null;
 };
 

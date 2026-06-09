@@ -1,17 +1,17 @@
 import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
-import type { Express, Request, Response } from "express";
+import express from "express";
 import * as db from "../db";
 import { getSessionCookieOptions } from "./cookies";
 import { sdk } from "./sdk";
 import { ENV } from "./env";
 
-function getQueryParam(req: Request, key: string): string | undefined {
-  const value = req.query[key];
+function getQueryParam(req: express.Request, key: string): string | undefined {
+  const value = (req.query as Record<string, any>)[key];
   return typeof value === "string" ? value : undefined;
 }
 
-export function registerOAuthRoutes(app: Express) {
-  const handler = async (req: Request, res: Response) => {
+export function registerOAuthRoutes(app: express.Express) {
+  const handler = async (req: express.Request, res: express.Response) => {
     if (ENV.isProduction) {
       res.status(403).send("Mock login only available in development");
       return;

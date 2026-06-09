@@ -1,7 +1,7 @@
 import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 import { ForbiddenError } from "@shared/_core/errors";
 import { parse as parseCookieHeader } from "cookie";
-import type { Request } from "express";
+import express from "express";
 import { SignJWT, jwtVerify } from "jose";
 import type { User } from "@shared/types";
 import * as db from "../db";
@@ -101,7 +101,7 @@ class SDKServer {
     }
   }
 
-  async authenticateRequest(req: Request): Promise<User> {
+  async authenticateRequest(req: express.Request): Promise<User> {
     const cookies = this.parseCookies(req.headers.cookie);
     const sessionCookie = cookies.get(COOKIE_NAME);
     const session = await this.verifySession(sessionCookie);
