@@ -1,5 +1,4 @@
-import express from "express";
-import type { Request, Response, NextFunction } from "express";
+import express, { Express, Request, Response, NextFunction } from "express";
 import fs from "fs";
 import { type Server } from "http";
 import { nanoid } from "nanoid";
@@ -7,7 +6,7 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import viteConfig from "../../vite.config";
 
-export async function setupVite(app: express.Express, server: Server) {
+export async function setupVite(app: Express, server: Server) {
   const serverOptions = {
     middlewareMode: true,
     hmr: { server },
@@ -53,7 +52,7 @@ export async function setupVite(app: express.Express, server: Server) {
   });
 }
 
-export function serveStatic(app: express.Express) {
+export function serveStatic(app: Express) {
   let distPath = path.resolve(process.cwd(), "dist", "public");
   
   if (!fs.existsSync(distPath)) {

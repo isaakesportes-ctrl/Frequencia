@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express, { Express, Request, Response } from "express";
+import express, { Express, Request, Response, NextFunction } from "express";
 import cookieParser from "cookie-parser";
 import { createServer } from "http";
 import net from "net";
@@ -36,7 +36,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 // Debug middleware for Vercel
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   if (process.env.VERCEL) {
     console.log(`[Vercel Request] ${req.method} ${req.url}`);
   }
@@ -68,6 +68,16 @@ async function startServer() {
   } else if (!process.env.VERCEL) {
     serveStatic(app);
   }
+
+  // Error handling middleware - should be last
+  app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    console.error("[Server Error]", err);
+    res.status(500).json({ 
+      error: "Internal Server Error", 
+      message: err instanceof Error ? err.message : String(err),
+      stack: process.env.NODE_ENV === "development" ? (err instanceof Error ? err.stack : undefined) : undefined
+    });
+  });
 
   // Only start listening if not on Vercel
   if (!process.env.VERCEL) {
