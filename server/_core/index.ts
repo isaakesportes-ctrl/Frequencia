@@ -35,6 +35,14 @@ app.use(cookieParser());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
+// Debug middleware for Vercel
+app.use((req, res, next) => {
+  if (process.env.VERCEL) {
+    console.log(`[Vercel Request] ${req.method} ${req.url}`);
+  }
+  next();
+});
+
 // Register routes synchronously
 registerOAuthRoutes(app);
 
