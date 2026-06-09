@@ -4,7 +4,6 @@
     "skipLibCheck": true,
     "noEmit": false,
     "allowImportingTsExtensions": false,
-    "types": ["node"],
     "lib": ["esnext"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
