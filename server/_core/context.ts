@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
-import type { User } from "@shared/types";
-import { sdk } from "./sdk";
+import type { User } from "../../shared/types.js";
+import { sdk } from "./sdk.js";
 
 export type TrpcContext = {
   req: Request;

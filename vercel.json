@@ -5,11 +5,7 @@
       "src": "api/index.ts",
       "use": "@vercel/node",
       "config": {
-        "tsconfig": "tsconfig.server.json",
-        "includeFiles": [
-          "server/**/*",
-          "shared/**/*"
-        ]
+        "tsconfig": "tsconfig.server.json"
       }
     },
     {

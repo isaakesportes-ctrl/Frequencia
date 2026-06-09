@@ -2,7 +2,7 @@ import XLSX from 'xlsx';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { Aula, Professor, Local, AulasStats, User, AulaPresenca } from "@shared/types";
+import { Aula, Professor, Local, AulasStats, User, AulaPresenca } from "../shared/types.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

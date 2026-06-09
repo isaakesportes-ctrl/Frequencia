@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { COOKIE_NAME } from "@shared/const";
-import { getSessionCookieOptions } from "./_core/cookies";
-import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
-import { getAulas, getAulasByFilters, searchAulas, getAulaById, createAula, updateAula, deleteAula, getAllProfessores, getProfessorAulas, getAllLocais, getAulasStats, getUsers, createUser, deleteUser, updateUserPassword, updateUserName, updateUserRole, registrarPresenca, getPresencasByAula, removerPresenca } from "./db";
+import { COOKIE_NAME } from "../shared/const.js";
+import { getSessionCookieOptions } from "./_core/cookies.js";
+import { publicProcedure, protectedProcedure, router } from "./_core/trpc.js";
+import { getAulas, getAulasByFilters, searchAulas, getAulaById, createAula, updateAula, deleteAula, getAllProfessores, getProfessorAulas, getAllLocais, getAulasStats, getUsers, createUser, deleteUser, updateUserPassword, updateUserName, updateUserRole, registrarPresenca, getPresencasByAula, removerPresenca } from "./db.js";
 
 export const appRouter = router({
   auth: router({

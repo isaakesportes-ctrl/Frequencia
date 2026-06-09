@@ -1,9 +1,9 @@
-import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
+import { COOKIE_NAME, ONE_YEAR_MS } from "../../shared/const.js";
 import { Request, Response, Application } from "express";
-import * as db from "../db";
-import { getSessionCookieOptions } from "./cookies";
-import { sdk } from "./sdk";
-import { ENV } from "./env";
+import * as db from "../db.js";
+import { getSessionCookieOptions } from "./cookies.js";
+import { sdk } from "./sdk.js";
+import { ENV } from "./env.js";
 
 function getQueryParam(req: Request, key: string): string | undefined {
   const value = (req.query as Record<string, any>)[key];

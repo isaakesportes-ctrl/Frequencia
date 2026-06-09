@@ -6,9 +6,13 @@
     "allowImportingTsExtensions": false,
     "types": ["node"],
     "lib": ["esnext"],
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
-    "strict": false
+    "strict": true,
+    "paths": {
+      "@shared/*": ["./shared/*"]
+    }
   },
   "include": ["server/**/*", "api/**/*", "shared/**/*"]
 }
