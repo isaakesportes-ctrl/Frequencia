@@ -65,36 +65,38 @@ async function startServer() {
   // development mode uses Vite, production mode uses static files
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
-  } else if (!process.env.VERCEL) {
-    serveStatic(app);
   }
 
-  // Error handling middleware - should be last
-  app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    console.error("[Server Error]", err);
-    res.status(500).json({ 
-      error: "Internal Server Error", 
-      message: err instanceof Error ? err.message : String(err),
-      stack: process.env.NODE_ENV === "development" ? (err instanceof Error ? err.stack : undefined) : undefined
-    });
+  const preferredPort = parseInt(process.env.PORT || "3000");
+  const port = await findAvailablePort(preferredPort);
+
+  if (port !== preferredPort) {
+    console.log(`Port ${preferredPort} is busy, using port ${port} instead`);
+  }
+
+  server.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}/`);
   });
-
-  // Only start listening if not on Vercel
-  if (!process.env.VERCEL) {
-    const preferredPort = parseInt(process.env.PORT || "3000");
-    const port = await findAvailablePort(preferredPort);
-
-    if (port !== preferredPort) {
-      console.log(`Port ${preferredPort} is busy, using port ${port} instead`);
-    }
-
-    server.listen(port, () => {
-      console.log(`Server running on http://localhost:${port}/`);
-    });
-  }
 }
 
-// Still call startServer for development and non-Vercel environments
-startServer().catch(console.error);
+// Register error handling middleware synchronously (must be last)
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error("[Server Error]", err);
+  res.status(500).json({ 
+    error: "Internal Server Error", 
+    message: err instanceof Error ? err.message : String(err),
+    stack: process.env.NODE_ENV === "development" ? (err instanceof Error ? err.stack : undefined) : undefined
+  });
+});
+
+// Register static files for production non-Vercel environments
+if (process.env.NODE_ENV !== "development" && !process.env.VERCEL) {
+  serveStatic(app);
+}
+
+// Only start the HTTP server locally
+if (!process.env.VERCEL) {
+  startServer().catch(console.error);
+}
 
 export default app;
