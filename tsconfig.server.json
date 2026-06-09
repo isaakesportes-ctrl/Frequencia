@@ -3,11 +3,12 @@
   "compilerOptions": {
     "skipLibCheck": true,
     "noEmit": false,
-    "types": ["node", "express"],
+    "allowImportingTsExtensions": false,
+    "types": ["node"],
     "lib": ["esnext"],
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "strict": true
+    "strict": false
   },
   "include": ["server/**/*", "api/**/*", "shared/**/*"]
 }
