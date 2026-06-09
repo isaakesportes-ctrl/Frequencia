@@ -9,6 +9,20 @@ const __dirname = path.dirname(__filename);
 
 const SPREADSHEET_PATH = path.resolve(process.cwd(), 'grade.xlsx');
 
+if (process.env.VERCEL) {
+  if (fs.existsSync(SPREADSHEET_PATH)) {
+    console.log(`[DB] Found spreadsheet at ${SPREADSHEET_PATH}`);
+  } else {
+    console.error(`[DB] Spreadsheet NOT FOUND at ${SPREADSHEET_PATH}`);
+    // Check if it's in the same directory as the bundled file
+    const altPath = path.resolve(__dirname, '..', '..', 'grade.xlsx');
+    console.log(`[DB] Checking alternative path: ${altPath}`);
+    if (fs.existsSync(altPath)) {
+      console.log(`[DB] Found spreadsheet at alternative path!`);
+    }
+  }
+}
+
 let cachedAulas: Aula[] = [];
 let cachedProfessores: Professor[] = [];
 let cachedLocais: Local[] = [];
