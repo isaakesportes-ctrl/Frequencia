@@ -1,3 +1,2 @@
-// @ts-ignore
-import app from "../dist/index.js";
-export default app;
+echo 'import app from "../server/_core/index";
+export default app;' > api/index.ts

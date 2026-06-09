@@ -6,7 +6,10 @@
       "use": "@vercel/node",
       "config": {
         "tsconfig": "tsconfig.server.json",
-        "includeFiles": ["dist/**"]
+        "includeFiles": [
+          "server/**/*",
+          "shared/**/*"
+        ]
       }
     },
     {
