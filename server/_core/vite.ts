@@ -22,7 +22,7 @@ export async function setupVite(app: Application, server: Server) {
   });
 
   // Serve static files from client/public directory in development
-  const publicDir = path.resolve(import.meta.dirname, "../..", "client", "public");
+  const publicDir = path.resolve(import.meta.dirname, "../../client/public");
   app.use(express.static(publicDir));
 
   app.use(vite.middlewares);
@@ -42,16 +42,14 @@ export async function setupVite(app: Application, server: Server) {
     try {
       const clientTemplate = path.resolve(
         import.meta.dirname,
-        "../..",
-        "client",
-        "index.html"
+        "../../client/index.html"
       );
 
       // always reload the index.html file from disk incase it changes
       let template = await fs.promises.readFile(clientTemplate, "utf-8");
       template = template.replace(
         `src="/src/main.tsx"`,
-        `src="/src/main.tsx?v=${nanoid()}`
+        `src="/src/main.tsx?v=${nanoid()}"`
       );
       const page = await vite.transformIndexHtml(url, template);
       res.status(200).set({ "Content-Type": "text/html" }).end(page);

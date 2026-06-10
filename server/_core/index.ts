@@ -4,11 +4,60 @@ import express, { Application, Request, Response, NextFunction } from "express";
 import cookieParser from "cookie-parser";
 import { createServer } from "http";
 import net from "net";
+import fs from "fs";
+import path from "path";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth.js";
 import { appRouter } from "../routers.js";
 import { createContext } from "./context.js";
 import { serveStatic, setupVite } from "./vite.js";
+
+// Manus Debug Collector Functions
+const PROJECT_ROOT = import.meta.dirname;
+const LOG_DIR = path.join(PROJECT_ROOT, "../../.manus-logs");
+const MAX_LOG_SIZE_BYTES = 1 * 1024 * 1024;
+const TRIM_TARGET_BYTES = Math.floor(MAX_LOG_SIZE_BYTES * 0.6);
+
+type LogSource = "browserConsole" | "networkRequests" | "sessionReplay";
+
+function ensureLogDir() {
+  if (!fs.existsSync(LOG_DIR)) {
+    fs.mkdirSync(LOG_DIR, { recursive: true });
+  }
+}
+
+function trimLogFile(logPath: string, maxSize: number) {
+  try {
+    if (!fs.existsSync(logPath) || fs.statSync(logPath).size <= maxSize) {
+      return;
+    }
+    const lines = fs.readFileSync(logPath, "utf-8").split("\n");
+    const keptLines: string[] = [];
+    let keptBytes = 0;
+    const targetSize = TRIM_TARGET_BYTES;
+    for (let i = lines.length - 1; i >= 0; i--) {
+      const lineBytes = Buffer.byteLength(`${lines[i]}\n`, "utf-8");
+      if (keptBytes + lineBytes > targetSize) break;
+      keptLines.unshift(lines[i]);
+      keptBytes += lineBytes;
+    }
+    fs.writeFileSync(logPath, keptLines.join("\n"), "utf-8");
+  } catch {
+    /* ignore trim errors */
+  }
+}
+
+function writeToLogFile(source: LogSource, entries: unknown[]) {
+  if (entries.length === 0) return;
+  ensureLogDir();
+  const logPath = path.join(LOG_DIR, `${source}.log`);
+  const lines = entries.map((entry) => {
+    const ts = new Date().toISOString();
+    return `[${ts}] ${JSON.stringify(entry)}`;
+  });
+  fs.appendFileSync(logPath, `${lines.join("\n")}\n`, "utf-8");
+  trimLogFile(logPath, MAX_LOG_SIZE_BYTES);
+}
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -31,6 +80,12 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 
 export const app = express();
 
+// Log all requests
+app.use((req: Request, res: Response, next: NextFunction) => {
+  console.log(`[Request] ${req.method} ${req.url}`);
+  next();
+});
+
 // Configure basic middlewares synchronously
 app.use(cookieParser());
 app.use(express.json({ limit: "50mb" }));
@@ -39,6 +94,54 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 // Handle favicon.ico requests gracefully
 app.get("/favicon.ico", (req, res) => {
   res.status(204).end();
+});
+
+// Manus Debug Collector Endpoints
+app.post("/__manus__/logs", (req, res) => {
+  const handlePayload = (payload: any) => {
+    if (payload.consoleLogs?.length > 0) {
+      writeToLogFile("browserConsole", payload.consoleLogs);
+    }
+    if (payload.networkRequests?.length > 0) {
+      writeToLogFile("networkRequests", payload.networkRequests);
+    }
+    if (payload.sessionEvents?.length > 0) {
+      writeToLogFile("sessionReplay", payload.sessionEvents);
+    }
+    res.status(200).json({ success: true });
+  };
+
+  if (req.body && typeof req.body === "object") {
+    try {
+      handlePayload(req.body);
+    } catch (e) {
+      res.status(400).json({ success: false, error: String(e) });
+    }
+    return;
+  }
+
+  let body = "";
+  req.on("data", (chunk) => {
+    body += chunk.toString();
+  });
+  req.on("end", () => {
+    try {
+      const payload = JSON.parse(body);
+      handlePayload(payload);
+    } catch (e) {
+      res.status(400).json({ success: false, error: String(e) });
+    }
+  });
+});
+
+// Serve debug-collector.js from public folder
+app.get("/__manus__/debug-collector.js", (req, res) => {
+  const filePath = path.join(PROJECT_ROOT, "../../client/public/__manus__/debug-collector.js");
+  if (fs.existsSync(filePath)) {
+    res.sendFile(filePath);
+  } else {
+    res.status(404).send("Not found");
+  }
 });
 
 // Debug middleware for Vercel
@@ -57,11 +160,11 @@ app.get("/mock", (req, res) => {
    try { 
      const name = req.query.name as string; 
      const role = req.query.role as string; 
- 
+
      if (!name || !role) { 
        return res.status(400).json({ error: "Parâmetros obrigatórios" }); 
      } 
- 
+
      return res.json({ 
        message: `Usuário ${name} com role ${role}` 
      }); 
@@ -107,6 +210,7 @@ async function startServer() {
 // Register error handling middleware synchronously (must be last)
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error("[Server Error]", err);
+  console.error("[Server Error Stack]", err.stack);
   res.status(500).json({ 
     error: "Internal Server Error", 
     message: err instanceof Error ? err.message : String(err),
