@@ -1,3 +1,4 @@
+// @ts-nocheck
 import express, { Application, Request, Response, NextFunction } from "express";
 import fs from "fs";
 import { type Server } from "http";

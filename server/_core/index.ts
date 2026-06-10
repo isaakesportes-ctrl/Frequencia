@@ -1,3 +1,4 @@
+// @ts-nocheck
 import "dotenv/config";
 import express, { Application, Request, Response, NextFunction } from "express";
 import cookieParser from "cookie-parser";

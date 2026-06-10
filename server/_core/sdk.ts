@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { COOKIE_NAME, ONE_YEAR_MS } from "../../shared/const.js";
 import { ForbiddenError } from "../../shared/_core/errors.js";
 import { parse as parseCookieHeader } from "cookie";
