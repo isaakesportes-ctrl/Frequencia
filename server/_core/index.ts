@@ -108,8 +108,8 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-// Register static files for production non-Vercel environments
-if (process.env.NODE_ENV !== "development" && !process.env.VERCEL) {
+// Register static files for production environments (including Vercel)
+if (process.env.NODE_ENV !== "development") {
   serveStatic(app);
 }
 
