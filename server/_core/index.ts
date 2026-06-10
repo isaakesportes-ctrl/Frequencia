@@ -46,6 +46,25 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // Register routes synchronously
 registerOAuthRoutes(app);
 
+// Mock route
+app.get("/mock", (req, res) => { 
+   try { 
+     const name = req.query.name as string; 
+     const role = req.query.role as string; 
+ 
+     if (!name || !role) { 
+       return res.status(400).json({ error: "Parâmetros obrigatórios" }); 
+     } 
+ 
+     return res.json({ 
+       message: `Usuário ${name} com role ${role}` 
+     }); 
+   } catch (err) { 
+     console.error(err); 
+     return res.status(500).json({ error: "Erro interno" }); 
+   } 
+ });
+
 // tRPC API middleware
 const trpcMiddleware = createExpressMiddleware({
   router: appRouter,
