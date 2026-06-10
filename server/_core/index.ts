@@ -36,6 +36,11 @@ app.use(cookieParser());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
+// Handle favicon.ico requests gracefully
+app.get("/favicon.ico", (req, res) => {
+  res.status(204).end();
+});
+
 // Debug middleware for Vercel
 app.use((req: Request, res: Response, next: NextFunction) => {
   if (process.env.VERCEL) {

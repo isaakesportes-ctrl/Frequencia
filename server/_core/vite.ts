@@ -21,12 +21,21 @@ export async function setupVite(app: Application, server: Server) {
     appType: "custom",
   });
 
+  // Serve static files from client/public directory in development
+  const publicDir = path.resolve(import.meta.dirname, "../..", "client", "public");
+  app.use(express.static(publicDir));
+
   app.use(vite.middlewares);
   app.use("*", async (req: Request, res: Response, next: NextFunction) => {
     const url = req.originalUrl;
 
     // Skip API routes - let them be handled by their respective handlers
     if (url.startsWith("/api/")) {
+      return next();
+    }
+
+    // If it's an asset that doesn't exist, don't try to render index.html
+    if (url.includes(".") && !url.endsWith(".html")) {
       return next();
     }
 
@@ -42,7 +51,7 @@ export async function setupVite(app: Application, server: Server) {
       let template = await fs.promises.readFile(clientTemplate, "utf-8");
       template = template.replace(
         `src="/src/main.tsx"`,
-        `src="/src/main.tsx?v=${nanoid()}"`
+        `src="/src/main.tsx?v=${nanoid()}`
       );
       const page = await vite.transformIndexHtml(url, template);
       res.status(200).set({ "Content-Type": "text/html" }).end(page);
