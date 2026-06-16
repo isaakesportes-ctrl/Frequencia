@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
@@ -213,12 +214,49 @@ export default function AdminPanel() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-[60vh]">
-        <motion.div 
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full"
-        />
+      <div className="space-y-6 md:space-y-10 max-w-[1400px] mx-auto pb-10">
+        <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+          <div className="space-y-1">
+            <Skeleton className="h-12 w-64 rounded-2xl" />
+            <Skeleton className="h-6 w-96 rounded-xl" />
+          </div>
+          <Skeleton className="h-14 w-40 rounded-full" />
+        </header>
+
+        <section className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <Skeleton className="h-14 md:col-span-8 rounded-2xl" />
+            <Skeleton className="h-14 md:col-span-4 rounded-2xl" />
+          </div>
+          <div className="space-y-6">
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              {[1, 2, 3].map((i) => (
+                <Skeleton key={i} className="h-10 w-32 rounded-xl shrink-0" />
+              ))}
+            </div>
+            <div className="flex gap-3 overflow-x-auto pb-3">
+              {[1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} className="h-12 w-48 rounded-2xl shrink-0" />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <div className="space-y-12">
+          {[1, 2].map((group) => (
+            <div key={group} className="space-y-6">
+              <div className="flex items-center gap-4 px-2">
+                <Skeleton className="w-12 h-12 rounded-2xl" />
+                <Skeleton className="h-10 w-48 rounded-xl" />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                {[1, 2, 3, 4].map((i) => (
+                  <Skeleton key={i} className="h-64 rounded-[2.5rem]" />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -274,48 +312,54 @@ export default function AdminPanel() {
         </div>
 
         <div className="space-y-6">
-          <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-            {["all", "Adulto", "Infantil-Teen"].map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-6 py-2.5 rounded-xl text-[10px] md:text-[12px] font-black uppercase tracking-[0.15em] transition-all duration-300 whitespace-nowrap ${
-                  activeCategory === cat 
-                  ? "bg-black text-white dark:bg-white dark:text-black shadow-lg" 
-                  : "bg-white text-slate-500 hover:bg-slate-50 dark:bg-slate-900 apple-card-shadow"
-                }`}
-              >
-                {cat === "all" ? "Todas as Idades" : cat}
-              </button>
-            ))}
+          <div className="relative group">
+            <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+              {["all", "Adulto", "Infantil-Teen"].map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-6 py-2.5 rounded-xl text-[10px] md:text-[12px] font-black uppercase tracking-[0.15em] transition-all duration-300 whitespace-nowrap shrink-0 ${
+                    activeCategory === cat 
+                    ? "bg-black text-white dark:bg-white dark:text-black shadow-lg" 
+                    : "bg-white text-slate-500 hover:bg-slate-50 dark:bg-slate-900 apple-card-shadow"
+                  }`}
+                >
+                  {cat === "all" ? "Todas as Idades" : cat}
+                </button>
+              ))}
+            </div>
+            <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white dark:from-slate-950 to-transparent pointer-events-none opacity-100 md:opacity-0 transition-opacity" />
           </div>
 
-          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-            <button
-              onClick={() => setActiveGroup("all")}
-              className={`flex items-center gap-3 px-6 py-3.5 rounded-2xl text-base font-heavy transition-all duration-300 whitespace-nowrap apple-card-shadow ${
-                activeGroup === "all" 
-                ? "bg-blue-50 text-[#0071e3] ring-1 ring-[#0071e3]/10" 
-                : "bg-white text-slate-500 hover:bg-slate-50 dark:bg-slate-900"
-              }`}
-            >
-              <LayoutGrid className="w-5 h-5" />
-              Todas as Modalidades
-            </button>
-            {availableGroups.map(group => (
+          <div className="relative group">
+            <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
               <button
-                key={group}
-                onClick={() => setActiveGroup(group)}
-                className={`flex items-center gap-3 px-6 py-3.5 rounded-2xl text-base font-heavy transition-all duration-300 whitespace-nowrap apple-card-shadow ${
-                  activeGroup === group 
+                onClick={() => setActiveGroup("all")}
+                className={`flex items-center gap-3 px-6 py-3.5 rounded-2xl text-base font-heavy transition-all duration-300 whitespace-nowrap shrink-0 apple-card-shadow ${
+                  activeGroup === "all" 
                   ? "bg-blue-50 text-[#0071e3] ring-1 ring-[#0071e3]/10" 
                   : "bg-white text-slate-500 hover:bg-slate-50 dark:bg-slate-900"
                 }`}
               >
-                <Layers className="w-5 h-5" />
-                {group}
+                <LayoutGrid className="w-5 h-5" />
+                Todas as Modalidades
               </button>
-            ))}
+              {availableGroups.map(group => (
+                <button
+                  key={group}
+                  onClick={() => setActiveGroup(group)}
+                  className={`flex items-center gap-3 px-6 py-3.5 rounded-2xl text-base font-heavy transition-all duration-300 whitespace-nowrap shrink-0 apple-card-shadow ${
+                    activeGroup === group 
+                    ? "bg-blue-50 text-[#0071e3] ring-1 ring-[#0071e3]/10" 
+                    : "bg-white text-slate-500 hover:bg-slate-50 dark:bg-slate-900"
+                  }`}
+                >
+                  <Layers className="w-5 h-5" />
+                  {group}
+                </button>
+              ))}
+            </div>
+            <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white dark:from-slate-950 to-transparent pointer-events-none opacity-100 md:opacity-0 transition-opacity" />
           </div>
         </div>
       </section>

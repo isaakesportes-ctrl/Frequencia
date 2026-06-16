@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
 import { User, Clock, MapPin, Users, Briefcase, Lock, Key, ArrowRight, Eye, EyeOff, Search, Plus, Trash2, CalendarDays } from "lucide-react";
@@ -25,6 +25,7 @@ export default function Professores() {
   const [showPassword, setShowPassword] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [error, setError] = useState(false);
+  const detailsRef = useRef<HTMLDivElement>(null);
   
   // Modal de Presença
   const [selectedAula, setSelectedAula] = useState<any | null>(null);
@@ -69,6 +70,11 @@ export default function Professores() {
     setIsUnlocked(false);
     setPassword("");
     setError(false);
+    
+    // Scroll to details panel on mobile when professor is selected
+    if (selectedProfessorId && detailsRef.current) {
+      detailsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }, [selectedProfessorId]);
 
   const handleUnlock = () => {
@@ -170,7 +176,7 @@ export default function Professores() {
           </div>
 
           {/* Professor Details and Aulas - Apple Style Content */}
-          <div className="lg:col-span-8 min-h-[500px] flex flex-col">
+          <div ref={detailsRef} className="lg:col-span-8 min-h-[500px] flex flex-col">
             {selectedProfessor ? (
               !isUnlocked ? (
                 <div className="flex-1 flex items-center justify-center animate-in fade-in zoom-in-95 duration-500">
@@ -329,9 +335,9 @@ export default function Professores() {
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Selecione um Professor</h3>
-                  <p className="text-slate-500 font-medium max-w-xs mx-auto">
-                    Escolha um docente na lista ao lado para visualizar seu perfil e horários de aula.
-                  </p>
+          <p className="text-slate-500 font-medium max-w-xs mx-auto">
+            Escolha um docente na lista abaixo para visualizar seu perfil e horários de aula.
+          </p>
                 </div>
               </div>
             )}
