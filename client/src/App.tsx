@@ -169,7 +169,7 @@ function App() {
         // switchable
       >
         <TooltipProvider>
-          <Toaster />
+          <Toaster position="top-right" className="!z-[100]" />
           <Router />
         </TooltipProvider>
       </ThemeProvider>

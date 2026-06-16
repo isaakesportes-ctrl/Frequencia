@@ -161,13 +161,13 @@ export default function Home() {
       >
         {isLoading ? (
           [1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-            <Skeleton key={i} className="h-48 rounded-3xl" />
+            <Skeleton key={i} className="h-40 sm:h-48 rounded-3xl" />
           ))
         ) : displayAulas.length > 0 ? (
           displayAulas.map((aula: any) => (
             <motion.div key={aula.id} variants={item}>
               <Card className="border-0 apple-card-shadow bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden group apple-card-hover h-full flex flex-col">
-                <CardContent className="p-6 space-y-4 flex-1 flex flex-col">
+                <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4 flex-1 flex flex-col">
                   <div className="space-y-2">
                     <div className="flex justify-between items-start gap-3">
                       <Badge className="bg-blue-50 text-[#0071e3] dark:bg-blue-900/30 dark:text-blue-400 border-0 rounded-full font-black px-3 py-0.5 text-[8px] uppercase tracking-widest shrink-0">
@@ -177,35 +177,35 @@ export default function Home() {
                         {aula.horario}
                       </div>
                     </div>
-                    <h3 className="text-xl font-heavy text-slate-900 dark:text-white leading-tight tracking-tight line-clamp-2 min-h-[3rem]">
+                    <h3 className="text-lg sm:text-xl font-heavy text-slate-900 dark:text-white leading-tight tracking-tight line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem]">
                       {aula.atividade}
                     </h3>
                   </div>
 
-                  <div className="space-y-2.5 pt-2 flex-1 min-w-0">
-                    <div className="flex items-center gap-3 text-slate-500 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-500 min-w-0">
-                      <div className="w-8 h-8 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center shadow-inner shrink-0">
-                        <User className="w-4 h-4" />
+                  <div className="space-y-2 pt-2 flex-1 min-w-0">
+                    <div className="flex items-center gap-2 sm:gap-3 text-slate-500 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-500 min-w-0">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center shadow-inner shrink-0">
+                        <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </div>
                       <div className="flex flex-col min-w-0">
-                        <span className="text-[7px] font-black uppercase tracking-widest opacity-40">Docente Responsável</span>
+                        <span className="text-[7px] font-black uppercase tracking-widest opacity-40">Docente</span>
                         <span className="font-heavy text-xs leading-tight truncate">{aula.professor?.nome}</span>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3 text-slate-500 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-500 min-w-0">
-                      <div className="w-8 h-8 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center shadow-inner shrink-0">
-                        <MapPin className="w-4 h-4" />
+                    <div className="flex items-center gap-2 sm:gap-3 text-slate-500 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-500 min-w-0">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center shadow-inner shrink-0">
+                        <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </div>
                       <div className="flex flex-col min-w-0">
-                        <span className="text-[7px] font-black uppercase tracking-widest opacity-40">Local da Atividade</span>
+                        <span className="text-[7px] font-black uppercase tracking-widest opacity-40">Local</span>
                         <span className="font-heavy text-xs leading-tight truncate">{aula.local?.nome}</span>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3 text-slate-500 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-500 min-w-0">
-                      <div className="w-8 h-8 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center shadow-inner shrink-0">
-                        <Clock className="w-4 h-4" />
+                    <div className="flex items-center gap-2 sm:gap-3 text-slate-500 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-500 min-w-0">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center shadow-inner shrink-0">
+                        <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </div>
                       <div className="flex flex-col min-w-0">
                         <span className="text-[7px] font-black uppercase tracking-widest opacity-40">Dia & Turno</span>
