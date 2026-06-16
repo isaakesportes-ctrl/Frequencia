@@ -1,0 +1,38 @@
+import { cn } from "@/lib/utils";
+import * as React from "react";
+
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
+interface SimpleSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  options: SelectOption[];
+}
+
+function SimpleSelect({
+  className,
+  options,
+  ...props
+}: SimpleSelectProps) {
+  return (
+    <select
+      className={cn(
+        "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-12 w-full min-w-0 rounded-xl border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+        "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+        className
+      )}
+      {...props}
+    >
+      <option value="" disabled>Selecione...</option>
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
+  );
+}
+
+export { SimpleSelect };

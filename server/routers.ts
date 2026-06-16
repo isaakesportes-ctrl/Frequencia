@@ -3,7 +3,7 @@ import { z } from "zod";
 import { COOKIE_NAME } from "../shared/const.js";
 import { getSessionCookieOptions } from "./_core/cookies.js";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc.js";
-import { getAulas, getAulasByFilters, searchAulas, getAulaById, createAula, updateAula, deleteAula, getAllProfessores, getProfessorAulas, getAllLocais, getAulasStats, getUsers, createUser, deleteUser, updateUserPassword, updateUserName, updateUserRole, registrarPresenca, getPresencasByAula, removerPresenca, loginWithNameAndPassword, requestAccess, getPendingAccessRequests, approveAccess, rejectAccess, registrarFrequenciaAulas, getFrequenciaAulasByDateAndHorario, getAllFrequenciaAulas, registrarFrequenciaKids, getFrequenciaKidsByDate, getAllFrequenciaKids, getSocioByMatricula } from "./db.js";
+import { getAulas, getAulasByFilters, searchAulas, getAulaById, createAula, updateAula, deleteAula, getAllProfessores, getProfessorAulas, getAllLocais, getAulasStats, getUsers, createUser, deleteUser, updateUserPassword, updateUserName, updateUserRole, registrarPresenca, getPresencasByAula, removerPresenca, loginWithNameAndPassword, requestAccess, getPendingAccessRequests, approveAccess, rejectAccess, registrarFrequenciaAulas, getFrequenciaAulasByDateAndHorario, getAllFrequenciaAulas, registrarFrequenciaKids, getFrequenciaKidsByDate, getAllFrequenciaKids, getSocioByMatricula, uploadMembers, getMembers, getMemberByNumero, clearMembers } from "./db.js";
 
 export const appRouter = router({
   auth: router({
@@ -296,6 +296,28 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return await getSocioByMatricula(input.matricula);
       }),
+  }),
+  
+  // Members routes
+  members: router({
+    upload: protectedProcedure
+      .input(z.record(z.array(z.string()))) // Exatamente o formato que o usuário pediu!
+      .mutation(async ({ input }) => {
+        return await uploadMembers(input);
+      }),
+    list: protectedProcedure.query(async () => {
+      return await getMembers();
+    }),
+    get: protectedProcedure
+      .input(z.object({
+        numeroSocio: z.string()
+      }))
+      .query(async ({ input }) => {
+        return await getMemberByNumero(input.numeroSocio);
+      }),
+    clear: protectedProcedure.mutation(async () => {
+      return await clearMembers();
+    }),
   }),
 });
 

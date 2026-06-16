@@ -2,7 +2,7 @@ import XLSX from 'xlsx';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { Aula, Professor, Local, AulasStats, User, AulaPresenca, FrequenciaAulas, FrequenciaKids, Socio } from "../shared/types.js";
+import { Aula, Professor, Local, AulasStats, User, AulaPresenca, FrequenciaAulas, FrequenciaKids, Socio, MemberEntry, MembersData } from "../shared/types.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -39,6 +39,10 @@ let frequenciaAulasCounter = 1;
 // Armazenamento de frequência kids
 let frequenciaKids: FrequenciaKids[] = [];
 let frequenciaKidsCounter = 1;
+
+// Armazenamento de sócios/membros
+let members: MemberEntry[] = [];
+let membersCounter = 1;
 
 // Mock user storage for development
 const mockUsers = new Map<number, User & { approved?: boolean }>([
@@ -740,11 +744,59 @@ export async function getAllFrequenciaKids() {
   return frequenciaKids;
 }
 
-export async function getSocioByMatricula(matricula: string): Promise<Socio | undefined> {
+export async function getSocioByMatricula(matricula: string): Promise<Socio | null> {
+  const memberEntry = members.find(m => m.numeroSocio === matricula);
+  if (memberEntry && memberEntry.nomes.length > 0) {
+    return {
+      id: memberEntry.id,
+      nome: memberEntry.nomes[0],
+      matricula: memberEntry.numeroSocio
+    };
+  }
+  
   const socios: Socio[] = [
     { id: 1, nome: "João Silva", matricula: "12345" },
     { id: 2, nome: "Maria Santos", matricula: "67890" },
     { id: 3, nome: "Pedro Costa", matricula: "11111" },
   ];
-  return socios.find(s => s.matricula === matricula);
+  const socio = socios.find(s => s.matricula === matricula);
+  return socio || null;
+}
+
+// Member Operations
+export async function uploadMembers(data: MembersData) {
+  // Limpa os dados existentes
+  members = [];
+  membersCounter = 1;
+  
+  // Adiciona os novos membros
+  Object.entries(data).forEach(([numeroSocio, nomes]) => {
+    members.push({
+      id: membersCounter++,
+      numeroSocio,
+      nomes,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+  });
+  
+  return {
+    success: true,
+    totalMembers: Object.keys(data).length,
+    members
+  };
+}
+
+export async function getMembers() {
+  return members;
+}
+
+export async function getMemberByNumero(numeroSocio: string) {
+  return members.find(m => m.numeroSocio === numeroSocio);
+}
+
+export async function clearMembers() {
+  members = [];
+  membersCounter = 1;
+  return { success: true };
 }

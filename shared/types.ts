@@ -108,3 +108,15 @@ export interface FrequenciaKids {
   data: string; // ISO string YYYY-MM-DD
   createdAt: Date;
 }
+
+export interface MembersData {
+  [numeroSocio: string]: string[];
+}
+
+export interface MemberEntry {
+  id: number;
+  numeroSocio: string;
+  nomes: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}

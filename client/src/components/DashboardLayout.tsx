@@ -32,6 +32,7 @@ const ADMIN_MENU = [
   { icon: Briefcase, label: "Gerenciar Aulas", path: "/admin" },
   { icon: UserCircle, label: "Professores", path: "/professores" },
   { icon: Users, label: "Equipe & Acessos", path: "/usuarios" },
+  { icon: Users, label: "Gerenciar Sócios", path: "/socios" },
 ];
 
 const PROFESSOR_MENU = [

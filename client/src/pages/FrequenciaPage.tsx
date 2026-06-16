@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { SimpleSelect } from "@/components/ui/simple-select";
 import { trpc } from "@/lib/trpc";
 import { Calendar, Users } from "lucide-react";
 import { motion } from "framer-motion";
@@ -26,8 +27,15 @@ export default function FrequenciaPage() {
   const [nomeAluno, setNomeAluno] = useState("");
   const [idade, setIdade] = useState("");
   const [acompanhado, setAcompanhado] = useState(false);
+  const { data: members } = trpc.members.list.useQuery();
   const getSocio = trpc.frequenciaKids.getSocio.useQuery({ matricula: numeroSocio }, { enabled: !!numeroSocio });
   const registerFrequenciaKids = trpc.frequenciaKids.register.useMutation();
+
+  // Encontrar o sócio atual
+  const currentMember = members?.find(m => m.numeroSocio === numeroSocio);
+  const memberOptions = currentMember
+    ? currentMember.nomes.map((nome) => ({ value: nome, label: nome }))
+    : [];
 
   // Initialize date and time
   useEffect(() => {
@@ -75,10 +83,14 @@ export default function FrequenciaPage() {
   };
 
   useEffect(() => {
-    if (getSocio.data) {
+    if (currentMember && currentMember.nomes.length > 0) {
+      setNomeAluno(currentMember.nomes[0]);
+    } else if (getSocio.data) {
       setNomeAluno(getSocio.data.nome);
+    } else {
+      setNomeAluno("");
     }
-  }, [getSocio.data]);
+  }, [currentMember, getSocio.data]);
 
   const handleRegisterKids = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -214,13 +226,23 @@ export default function FrequenciaPage() {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="nomeAluno" className="text-xs font-bold text-slate-500 uppercase">Nome do Aluno</Label>
-                      <Input
-                        id="nomeAluno"
-                        value={nomeAluno}
-                        onChange={(e) => setNomeAluno(e.target.value)}
-                        placeholder="Nome do aluno"
-                        className="h-12 bg-slate-50 dark:bg-slate-800 border-0 rounded-xl"
-                      />
+                      {currentMember && memberOptions.length > 0 ? (
+                        <SimpleSelect
+                          id="nomeAluno"
+                          value={nomeAluno}
+                          onChange={(e) => setNomeAluno(e.target.value)}
+                          options={memberOptions}
+                          className="h-12 bg-slate-50 dark:bg-slate-800 border-0 rounded-xl"
+                        />
+                      ) : (
+                        <Input
+                          id="nomeAluno"
+                          value={nomeAluno}
+                          onChange={(e) => setNomeAluno(e.target.value)}
+                          placeholder="Nome do aluno"
+                          className="h-12 bg-slate-50 dark:bg-slate-800 border-0 rounded-xl"
+                        />
+                      )}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="idade" className="text-xs font-bold text-slate-500 uppercase">Idade</Label>

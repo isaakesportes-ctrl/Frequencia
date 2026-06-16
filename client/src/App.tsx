@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import LoginPage from "./pages/LoginPage";
 import UsersPage from "./pages/Users";
 import FrequenciaPage from "./pages/FrequenciaPage";
+import MembersPage from "./pages/MembersPage";
 import DashboardLayout from "./components/DashboardLayout";
 import AuthSelectionPage from "./pages/AuthSelectionPage";
 import { useAuth } from "./_core/hooks/useAuth";
@@ -78,6 +79,9 @@ function Router() {
       </Route>
       <Route path="/dashboard">
         <ProtectedRoute component={Dashboard} requiredRole="admin" />
+      </Route>
+      <Route path="/socios">
+        <ProtectedRoute component={MembersPage} requiredRole="admin" />
       </Route>
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
