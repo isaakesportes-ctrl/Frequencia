@@ -74,6 +74,13 @@ export interface AulasStats {
   totalProfessores: number;
   totalCLT: number;
   totalTerceiros: number;
+  totalLocais: number;
+  totalModalidades: number;
+  aulasManha: number;
+  aulasTarde: number;
+  aulasNoite: number;
+  aulasAdulto: number;
+  aulasInfantilTeen: number;
   porDia: Record<string, number>;
   porTurno: Record<string, number>;
   porCategoria: Record<string, number>;
@@ -81,4 +88,23 @@ export interface AulasStats {
   porStatus: Record<string, number>;
   rankingLocais: { nome: string; total: number }[];
   rankingModalidades: { nome: string; total: number }[];
+}
+
+export interface FrequenciaAulas {
+  id: number;
+  aulaId: number;
+  quantidadePresentes: number;
+  data: string; // ISO string YYYY-MM-DD
+  horario: string; // HH:mm
+  createdAt: Date;
+}
+
+export interface FrequenciaKids {
+  id: number;
+  numeroSocio: string;
+  nomeAluno: string;
+  idade: number;
+  acompanhado: boolean;
+  data: string; // ISO string YYYY-MM-DD
+  createdAt: Date;
 }

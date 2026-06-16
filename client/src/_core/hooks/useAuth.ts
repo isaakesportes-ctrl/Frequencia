@@ -8,25 +8,6 @@ type UseAuthOptions = {
 };
 
 export function useAuth(options?: UseAuthOptions) {
-  // #region debug-point A:use-auth-init
-  (()=>{
-    const u = "http://127.0.0.1:7777/event";
-    const s = "login-render-hooks-error";
-    fetch(u, {
-      method: "POST",
-      body: JSON.stringify({
-        sessionId: s,
-        runId: "pre",
-        hypothesisId: "A",
-        location: "useAuth.ts:13",
-        msg: "[DEBUG] useAuth hook called",
-        data: { options },
-        ts: Date.now()
-      })
-    }).catch(()=>{});
-  })();
-  // #endregion
-
   const { redirectOnUnauthenticated = false, redirectPath } =
     options ?? {};
   const utils = trpc.useUtils();
@@ -76,25 +57,6 @@ export function useAuth(options?: UseAuthOptions) {
       error: meQuery.error ?? logoutMutation.error ?? null,
       isAuthenticated: Boolean(activeUser),
     };
-    
-    // #region debug-point B:use-auth-state
-    (()=>{
-      const u = "http://127.0.0.1:7777/event";
-      const s = "login-render-hooks-error";
-      fetch(u, {
-        method: "POST",
-        body: JSON.stringify({
-          sessionId: s,
-          runId: "pre",
-          hypothesisId: "B",
-          location: "useAuth.ts:58",
-          msg: "[DEBUG] useAuth state updated",
-          data: { result },
-          ts: Date.now()
-        })
-      }).catch(()=>{});
-    })();
-    // #endregion
 
     return result;
   }, [

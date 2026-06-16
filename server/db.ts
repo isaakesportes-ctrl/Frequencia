@@ -2,7 +2,7 @@ import XLSX from 'xlsx';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { Aula, Professor, Local, AulasStats, User, AulaPresenca } from "../shared/types.js";
+import { Aula, Professor, Local, AulasStats, User, AulaPresenca, FrequenciaAulas, FrequenciaKids, Socio } from "../shared/types.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,8 +32,16 @@ let lastReadTime = 0;
 let presencas: AulaPresenca[] = [];
 let presencaCounter = 1;
 
+// Armazenamento de frequência de aulas
+let frequenciaAulas: FrequenciaAulas[] = [];
+let frequenciaAulasCounter = 1;
+
+// Armazenamento de frequência kids
+let frequenciaKids: FrequenciaKids[] = [];
+let frequenciaKidsCounter = 1;
+
 // Mock user storage for development
-const mockUsers = new Map<number, User>([
+const mockUsers = new Map<number, User & { approved?: boolean }>([
   [1, { 
     id: 1, 
     openId: "mock-user-admin", 
@@ -41,12 +49,25 @@ const mockUsers = new Map<number, User>([
     email: null, 
     password: "ESP2026", // Senha padrão do Master
     role: "admin", // Nível MASTER visualmente
-    loginMethod: "mock",
+    loginMethod: "password",
+    approved: true,
     createdAt: new Date(), 
     updatedAt: new Date(), 
     lastSignedIn: new Date() 
   }],
 ]);
+
+// Storage for pending access requests
+interface AccessRequest {
+  id: number;
+  name: string;
+  password: string;
+  role: "user" | "admin" | "monitor";
+  function: string;
+  requestedAt: Date;
+}
+const pendingAccessRequests = new Map<number, AccessRequest>();
+let accessRequestCounter = 1;
 
 // Armazenamento persistente de senhas em memória (em um sistema real seria um BD)
 const userPasswords = new Map<number, string>();
@@ -82,6 +103,7 @@ export async function getUsers() {
           password: userPasswords.get(id) || defaultPass,
           role: userRoles.get(id) || "user",
           loginMethod: "password",
+          approved: true,
           createdAt: prof.createdAt || new Date(),
           updatedAt: prof.updatedAt || new Date(),
           lastSignedIn: prof.updatedAt || new Date()
@@ -97,13 +119,14 @@ export async function getUsers() {
       
       // Se o nome no mockUsers for diferente do displayName (nome editado), atualiza o mockUsers
       if (u.id < 1000 && u.name !== displayName) {
-        mockUsers.set(u.id, { ...u, name: displayName || u.name });
+        mockUsers.set(u.id, { ...u, name: displayName || u.name, approved: true });
       }
       
       return {
         ...u,
         name: displayName || "Usuário",
         role: u.id === 1 ? "admin" : (role || "user"),
+        approved: u.id === 1 ? true : (u as any).approved || true,
         password: u.id === 1 ? u.password : (userPasswords.get(u.id) || u.password || safeSplit(u.name || "", " ")[0]?.toLowerCase() || "123")
       };
     });
@@ -398,6 +421,13 @@ export async function getAulasStats(): Promise<AulasStats> {
     totalProfessores: cachedProfessores.length,
     totalCLT: 0,
     totalTerceiros: 0,
+    totalLocais: cachedLocais.length,
+    totalModalidades: 0,
+    aulasManha: 0,
+    aulasTarde: 0,
+    aulasNoite: 0,
+    aulasAdulto: 0,
+    aulasInfantilTeen: 0,
     porDia: {},
     porTurno: {},
     porCategoria: {},
@@ -410,6 +440,7 @@ export async function getAulasStats(): Promise<AulasStats> {
   const locaisCount: Record<string, number> = {};
   const modalidadesCount: Record<string, number> = {};
   const professoresContrato = new Map<number, string>();
+  const modalidadesSet = new Set<string>();
 
   cachedAulas.forEach(aula => {
     stats.porDia[aula.dia] = (stats.porDia[aula.dia] || 0) + 1;
@@ -418,14 +449,26 @@ export async function getAulasStats(): Promise<AulasStats> {
     stats.porContrato[aula.tipoContrato] = (stats.porContrato[aula.tipoContrato] || 0) + 1;
     stats.porStatus[aula.status || 'Ativa'] = (stats.porStatus[aula.status || 'Ativa'] || 0) + 1;
 
+    // Count per turno
+    if (aula.turno === 'Manhã') stats.aulasManha++;
+    else if (aula.turno === 'Tarde') stats.aulasTarde++;
+    else if (aula.turno === 'Noite') stats.aulasNoite++;
+
+    // Count per categoria
+    if (aula.categoria === 'Adulto') stats.aulasAdulto++;
+    else if (aula.categoria === 'Infantil-Teen') stats.aulasInfantilTeen++;
+
     const localNome = aula.local?.nome || 'Desconhecido';
     locaisCount[localNome] = (locaisCount[localNome] || 0) + 1;
     modalidadesCount[aula.atividade] = (modalidadesCount[aula.atividade] || 0) + 1;
+    modalidadesSet.add(aula.atividade);
     
     if (aula.professorId) {
       professoresContrato.set(aula.professorId, aula.tipoContrato);
     }
   });
+
+  stats.totalModalidades = modalidadesSet.size;
 
   professoresContrato.forEach((tipo) => {
     if (tipo.toUpperCase().includes('CLT')) stats.totalCLT++;
@@ -579,4 +622,129 @@ export async function getPresencasByAula(aulaId: number, data: string) {
 export async function removerPresenca(id: number) {
   presencas = presencas.filter(p => p.id !== id);
   return { success: true };
+}
+
+// New functions for login and access control
+export async function loginWithNameAndPassword(name: string, password: string) {
+  await syncFromSpreadsheet();
+  
+  // Find user by name
+  const users = await getUsers();
+  const user = users.find(u => 
+    u.name?.toLowerCase() === name.toLowerCase()
+  );
+  
+  if (!user) {
+    return { success: false, error: "Usuário não encontrado" };
+  }
+  
+  // Check if user is approved
+  if (user.id !== 1 && !(user as any).approved) {
+    return { success: false, error: "Acesso pendente de aprovação" };
+  }
+  
+  // Check password
+  if (user.password !== password) {
+    return { success: false, error: "Senha incorreta" };
+  }
+  
+  return { success: true, user };
+}
+
+export async function requestAccess(name: string, password: string, role: "user" | "admin" | "monitor", userFunction: string) {
+  const id = accessRequestCounter++;
+  pendingAccessRequests.set(id, {
+    id,
+    name,
+    password,
+    role,
+    function: userFunction,
+    requestedAt: new Date()
+  });
+  return { success: true, id };
+}
+
+export async function getPendingAccessRequests() {
+  return Array.from(pendingAccessRequests.values());
+}
+
+export async function approveAccess(requestId: number, updates?: { name?: string; password?: string; role?: "user" | "admin" | "monitor"; function?: string }) {
+  const request = pendingAccessRequests.get(requestId);
+  if (!request) {
+    return { success: false, error: "Solicitação não encontrada" };
+  }
+  
+  // Create user from request (with optional overrides)
+  const id = Math.max(0, ...Array.from(mockUsers.keys())) + 1;
+  const newUser: User & { approved: boolean; function?: string } = {
+    id,
+    openId: `user-${id}`,
+    name: updates?.name || request.name,
+    email: null,
+    password: updates?.password || request.password,
+    role: updates?.role || request.role,
+    loginMethod: "password",
+    approved: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    lastSignedIn: new Date(),
+    function: updates?.function || request.function
+  };
+  
+  mockUsers.set(id, newUser);
+  pendingAccessRequests.delete(requestId);
+  
+  return { success: true, user: newUser };
+}
+
+export async function rejectAccess(requestId: number) {
+  pendingAccessRequests.delete(requestId);
+  return { success: true };
+}
+
+// Frequência de Aulas Operations
+export async function registrarFrequenciaAulas(data: { aulaId: number; quantidadePresentes: number; data: string; horario: string }) {
+  const novaFrequencia: FrequenciaAulas = {
+    id: frequenciaAulasCounter++,
+    ...data,
+    createdAt: new Date()
+  };
+  frequenciaAulas.push(novaFrequencia);
+  return novaFrequencia;
+}
+
+export async function getFrequenciaAulasByDateAndHorario(data: string, horario: string) {
+  return frequenciaAulas.filter(p => p.data === data && p.horario === horario);
+}
+
+export async function getAllFrequenciaAulas() {
+  return frequenciaAulas;
+}
+
+// Frequência Kids Operations
+export async function registrarFrequenciaKids(data: { numeroSocio: string; nomeAluno: string; idade: number; acompanhado: boolean; data: string }) {
+  const novaFrequencia: FrequenciaKids = {
+    id: frequenciaKidsCounter++,
+    ...data,
+    createdAt: new Date()
+  };
+  frequenciaKids.push(novaFrequencia);
+  return novaFrequencia;
+}
+
+export async function getFrequenciaKidsByDate(data: string) {
+  return frequenciaKids.filter(p => p.data === data);
+}
+
+export async function getAllFrequenciaKids() {
+  return frequenciaKids;
+}
+
+export async function getSocioByMatricula(matricula: string): Promise<Socio | undefined> {
+  const socios: Socio[] = [
+    { id: 1, nome: "João Silva", matricula: "12345" },
+    { id: 2, nome: "Maria Santos", matricula: "67890" },
+    { id: 3, nome: "Pedro Costa", matricula: "11111" },
+  ];
+  return socios.find(s => s.matricula === matricula);
 }

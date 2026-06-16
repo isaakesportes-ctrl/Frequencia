@@ -20,7 +20,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users, Calendar, Briefcase, UserCircle, ChevronRight } from "lucide-react";
+import { LayoutDashboard, LogOut, PanelLeft, Users, Calendar, Briefcase, UserCircle, ChevronRight, ClipboardList } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
@@ -28,6 +28,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const ADMIN_MENU = [
   { icon: LayoutDashboard, label: "Estatísticas", path: "/dashboard" },
   { icon: Calendar, label: "Grade Geral", path: "/grade" },
+  { icon: ClipboardList, label: "Controle de Frequência", path: "/frequencia" },
   { icon: Briefcase, label: "Gerenciar Aulas", path: "/admin" },
   { icon: UserCircle, label: "Professores", path: "/professores" },
   { icon: Users, label: "Equipe & Acessos", path: "/usuarios" },
@@ -35,6 +36,7 @@ const ADMIN_MENU = [
 
 const PROFESSOR_MENU = [
   { icon: Calendar, label: "Grade Geral", path: "/grade" },
+  { icon: ClipboardList, label: "Controle de Frequência", path: "/frequencia" },
   { icon: UserCircle, label: "Minhas Aulas", path: "/professores" },
 ];
 
@@ -48,25 +50,6 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // #region debug-point G:dashboard-layout-init
-  (()=>{
-    const u = "http://127.0.0.1:7777/event";
-    const s = "login-render-hooks-error";
-    fetch(u, {
-      method: "POST",
-      body: JSON.stringify({
-        sessionId: s,
-        runId: "pre",
-        hypothesisId: "G",
-        location: "DashboardLayout.tsx:47",
-        msg: "[DEBUG] DashboardLayout rendered",
-        data: {},
-        ts: Date.now()
-      })
-    }).catch(()=>{});
-  })();
-  // #endregion
-
   const [sidebarWidth, setSidebarWidth] = useState(() => {
     const saved = localStorage.getItem(SIDEBAR_WIDTH_KEY);
     return saved ? Math.min(Math.max(parseInt(saved, 10), MIN_WIDTH), MAX_WIDTH) : DEFAULT_WIDTH;
@@ -130,7 +113,23 @@ function DashboardLayoutContent({
   const [isResizing, setIsResizing] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   
-  const menuItems = user?.role === "admin" ? ADMIN_MENU : PROFESSOR_MENU;
+  // Check if user is a professor (openId starts with "prof-") OR admin/monitor
+  const isProfessor = user?.openId?.startsWith("prof-") || user?.role === "admin" || user?.role === "monitor";
+  
+  // Build menu based on user type
+  let menuItems;
+  if (user?.role === "admin") {
+    menuItems = ADMIN_MENU;
+  } else if (isProfessor) {
+    // For professors (openId starts with prof-) or monitors: show PROFESSOR_MENU
+    menuItems = PROFESSOR_MENU;
+  } else {
+    // For regular users: show only Grade Geral and Controle de Frequência, hide Minhas Aulas
+    menuItems = [
+      { icon: Calendar, label: "Grade Geral", path: "/grade" },
+      { icon: ClipboardList, label: "Controle de Frequência", path: "/frequencia" },
+    ];
+  }
   const isMobile = useIsMobile();
   const { setOpenMobile } = useSidebar();
 

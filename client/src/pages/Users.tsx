@@ -1,7 +1,7 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Shield, User, Mail, ShieldAlert, Users, Plus, Edit, Trash2, Key, Eye, EyeOff } from "lucide-react";
+import { Shield, User, Mail, ShieldAlert, Users, Plus, Edit, Trash2, Key, Eye, EyeOff, CheckCircle2, XCircle, Clock, Briefcase } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
@@ -26,13 +26,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
-
 const container: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 }
+    staggerChildren: 0.1
   }
 };
 
@@ -41,18 +39,30 @@ const item: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
 };
 
+interface AccessRequest {
+  id: number;
+  name: string;
+  password: string;
+  role: "user" | "admin" | "monitor";
+  function: string;
+  requestedAt: Date;
+}
+
 export default function UsersPage() {
   const { user: currentUser } = useAuth();
   const utils = trpc.useUtils();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState<{ id: number; name: string; password?: string; role: "user" | "admin" | "monitor" } | null>(null);
+  const [editingUser, setEditingUser] = useState<{ id: number; name: string; password?: string; role: "user" | "admin" | "monitor"; function?: string } | null>(null);
   const [newName, setNewName] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newRole, setNewRole] = useState<"user" | "admin" | "monitor">("user");
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ name: "", role: "user" as "user" | "admin" | "monitor" });
+  const [approveRequestId, setApproveRequestId] = useState<number | null>(null);
+  const [editingRequest, setEditingRequest] = useState<{ id: number; name: string; password: string; role: "user" | "admin" | "monitor"; function: string } | null>(null);
 
   const { data: users, isLoading } = trpc.users.list.useQuery();
+  const { data: pendingRequests, isLoading: isLoadingRequests } = trpc.auth.getPendingRequests.useQuery();
   
   const createMutation = trpc.users.create.useMutation({
     onSuccess: () => {
@@ -106,6 +116,28 @@ export default function UsersPage() {
     }
   });
 
+  const approveAccessMutation = trpc.auth.approveAccess.useMutation({
+    onSuccess: () => {
+      toast.success("Acesso aprovado com sucesso");
+      setApproveRequestId(null);
+      utils.auth.getPendingRequests.invalidate();
+      utils.users.list.invalidate();
+    },
+    onError: (error) => {
+      toast.error(`Erro ao aprovar acesso: ${error.message}`);
+    }
+  });
+
+  const rejectAccessMutation = trpc.auth.rejectAccess.useMutation({
+    onSuccess: () => {
+      toast.success("Solicitação rejeitada");
+      utils.auth.getPendingRequests.invalidate();
+    },
+    onError: (error) => {
+      toast.error(`Erro ao rejeitar solicitação: ${error.message}`);
+    }
+  });
+
   const handleUpdateUser = async () => {
     if (!editingUser) return;
     
@@ -133,6 +165,25 @@ export default function UsersPage() {
     }
   };
 
+  const handleApproveAccess = async () => {
+    if (!editingRequest) {
+      toast.error("Nenhuma solicitação selecionada");
+      return;
+    }
+    
+    try {
+      await approveAccessMutation.mutateAsync({
+        requestId: editingRequest.id,
+        name: editingRequest.name,
+        password: editingRequest.password,
+        role: editingRequest.role,
+        function: editingRequest.function
+      });
+    } catch (e) {
+      // Erro já tratado
+    }
+  };
+
   return (
     <div className="space-y-8 md:space-y-12 max-w-[1400px] mx-auto pb-10">
       <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 px-2">
@@ -142,7 +193,7 @@ export default function UsersPage() {
             animate={{ opacity: 1, x: 0 }}
             className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white"
           >
-            Equipe
+            Equipe & Acessos
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, x: -20 }}
@@ -150,7 +201,7 @@ export default function UsersPage() {
             transition={{ delay: 0.1 }}
             className="text-base md:text-xl text-slate-500 font-medium tracking-tight"
           >
-            Gerencie os níveis de acesso e as permissões dos colaboradores.
+            Gerencie os usuários e aprovações de acesso.
           </motion.p>
         </div>
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
@@ -164,6 +215,186 @@ export default function UsersPage() {
         </motion.div>
       </header>
 
+      {/* Pending Access Requests */}
+      {pendingRequests && pendingRequests.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <Card className="border-0 shadow-2xl shadow-yellow-200/30 dark:shadow-none bg-yellow-50 dark:bg-yellow-900/20 rounded-[2.5rem] overflow-hidden border border-yellow-200 dark:border-yellow-800">
+            <CardHeader className="p-8 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-yellow-500 flex items-center justify-center">
+                  <Clock className="w-5 h-5 text-white" />
+                </div>
+                <CardTitle className="text-2xl font-black tracking-tight text-yellow-900 dark:text-yellow-100">
+                  Solicitações Pendentes ({pendingRequests.length})
+                </CardTitle>
+              </div>
+              <CardDescription className="text-yellow-700 dark:text-yellow-300">
+                Aprove ou rejeite as solicitações de acesso ao sistema.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-4 md:p-8 pt-0">
+              <div className="space-y-4">
+                {pendingRequests.map((request: AccessRequest) => (
+                  <motion.div
+                    key={request.id}
+                    variants={item}
+                    initial="hidden"
+                    animate="show"
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 bg-white dark:bg-slate-900 rounded-2xl shadow-sm"
+                  >
+                    <div className="flex items-start gap-4 flex-1">
+                      <div className="w-12 h-12 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center shrink-0">
+                        <User className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-bold text-lg text-slate-900 dark:text-white">{request.name}</p>
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          <Badge className="bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border-0">
+                            {request.role === "admin" ? "Administrador" : request.role === "monitor" ? "Monitor" : "Professor"}
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-slate-500 mt-2 line-clamp-2">
+                          <Briefcase className="w-3.5 h-3.5 inline mr-1.5" />
+                          {request.function}
+                        </p>
+                        <p className="text-xs text-slate-400 mt-1">
+                          Solicitado em {new Date(request.requestedAt).toLocaleDateString('pt-BR')}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Dialog open={editingRequest?.id === request.id} onOpenChange={(open) => !open && setEditingRequest(null)}>
+                        <DialogTrigger asChild>
+                          <Button 
+                            className="bg-green-600 hover:bg-green-700 text-white rounded-full"
+                            onClick={() => {
+                              setEditingRequest({ 
+                                id: request.id, 
+                                name: request.name, 
+                                password: request.password, 
+                                role: request.role, 
+                                function: request.function 
+                              });
+                            }}
+                          >
+                            <CheckCircle2 className="w-4 h-4 mr-2" />
+                            Aprovar
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[450px] w-[95vw] bg-white dark:bg-slate-950 border-0 apple-card-shadow rounded-[2.5rem] p-0 overflow-hidden">
+                          <div className="bg-green-600 p-8 text-white">
+                            <DialogHeader>
+                              <DialogTitle className="text-3xl font-heavy tracking-tight">Aprovar Acesso</DialogTitle>
+                              <DialogDescription className="text-white/80 font-medium">
+                                Revise e edite as informações antes de aprovar.
+                              </DialogDescription>
+                            </DialogHeader>
+                          </div>
+                          <div className="p-8 space-y-6">
+                            <div className="space-y-2">
+                              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Nome Completo</Label>
+                              <div className="relative">
+                                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                <Input
+                                  placeholder="Nome do usuário..."
+                                  className="pl-11 h-14 bg-slate-50 dark:bg-slate-900 border-0 rounded-2xl font-bold"
+                                  value={editingRequest?.name || ""}
+                                  onChange={(e) => setEditingRequest(prev => prev ? { ...prev, name: e.target.value } : null)}
+                                />
+                              </div>
+                            </div>
+
+                            <div className="space-y-2">
+                              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Cargo / Permissão</Label>
+                              <Select 
+                                value={editingRequest?.role} 
+                                onValueChange={(value: "user" | "admin" | "monitor") => setEditingRequest(prev => prev ? { ...prev, role: value } : null)}
+                              >
+                                <SelectTrigger className="h-14 bg-slate-50 dark:bg-slate-900 border-0 rounded-2xl px-4 font-bold">
+                                  <SelectValue placeholder="Selecione o cargo" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 rounded-2xl">
+                                  <SelectItem value="user" className="rounded-xl py-3">Professor (Acesso Restrito)</SelectItem>
+                                  <SelectItem value="monitor" className="rounded-xl py-3">Monitor de Recreação (Restrito)</SelectItem>
+                                  <SelectItem value="admin" className="rounded-xl py-3">Administrador (Acesso Total)</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            <div className="space-y-2">
+                              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Função</Label>
+                              <div className="relative">
+                                <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                <Input
+                                  placeholder="Função do usuário..."
+                                  className="pl-11 h-14 bg-slate-50 dark:bg-slate-900 border-0 rounded-2xl font-bold"
+                                  value={editingRequest?.function || ""}
+                                  onChange={(e) => setEditingRequest(prev => prev ? { ...prev, function: e.target.value } : null)}
+                                />
+                              </div>
+                            </div>
+
+                            <div className="space-y-2">
+                              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Senha de Acesso</Label>
+                              <div className="relative">
+                                <Key className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                <Input
+                                  type={showPassword ? "text" : "password"}
+                                  placeholder="Senha do usuário"
+                                  className="pl-11 pr-12 h-14 bg-slate-50 dark:bg-slate-900 border-0 rounded-2xl font-bold tracking-widest"
+                                  value={editingRequest?.password || ""}
+                                  onChange={(e) => setEditingRequest(prev => prev ? { ...prev, password: e.target.value } : null)}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => setShowPassword(!showPassword)}
+                                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                                >
+                                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <DialogFooter className="p-8 pt-0 flex-col sm:flex-row gap-3">
+                            <Button 
+                              variant="ghost" 
+                              onClick={() => setEditingRequest(null)} 
+                              className="rounded-full font-heavy h-12"
+                            >
+                              Cancelar
+                            </Button>
+                            <Button 
+                              className="bg-green-600 hover:bg-green-700 text-white rounded-full px-8 h-12 font-heavy apple-card-shadow"
+                              onClick={handleApproveAccess}
+                              disabled={approveAccessMutation.isPending}
+                            >
+                              {approveAccessMutation.isPending ? "Aprovando..." : "Confirmar Aprovação"}
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+
+                      <Button 
+                        variant="ghost" 
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full"
+                        onClick={() => rejectAccessMutation.mutate({ requestId: request.id })}
+                        disabled={rejectAccessMutation.isPending}
+                      >
+                        <XCircle className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
+
       <div className="grid grid-cols-1 gap-6 md:gap-8">
         <Card className="border-0 shadow-2xl shadow-slate-200/50 dark:shadow-none bg-white dark:bg-slate-900 rounded-[2.5rem] overflow-hidden">
           <CardHeader className="p-8 pb-4">
@@ -171,7 +402,7 @@ export default function UsersPage() {
               <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
                 <Users className="w-5 h-5 text-blue-600" />
               </div>
-              <CardTitle className="text-2xl font-black tracking-tight">Colaboradores</CardTitle>
+              <CardTitle className="text-2xl font-black tracking-tight">Usuários do Sistema</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="p-4 md:p-8 pt-0">
@@ -180,7 +411,7 @@ export default function UsersPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                   {isLoading ? (
                     Array.from({ length: 6 }).map((_, i) => (
-                      <div key={i} className="h-32 w-full bg-slate-100 dark:bg-slate-800 animate-pulse rounded-3xl" />
+                      <div key={i} className="h-32 w-full bg-slate-100 dark:bg-slate-800 animate-pulse rounded-2xl" />
                     ))
                   ) : users?.map((user: any) => (
                     <motion.div 
@@ -216,7 +447,18 @@ export default function UsersPage() {
                                       {user.role}
                                     </Badge>
                                   )}
+                                  {!user.approved && (
+                                    <Badge className="bg-yellow-500 text-white border-0 font-black px-2 py-0.5 text-[8px] uppercase tracking-widest">
+                                      PENDENTE
+                                    </Badge>
+                                  )}
                                 </div>
+                                {user.function && (
+                                  <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
+                                    <Briefcase className="w-3 h-3" />
+                                    {user.function}
+                                  </p>
+                                )}
                               </div>
                             </div>
 
@@ -230,7 +472,8 @@ export default function UsersPage() {
                                     id: user.id, 
                                     name: user.name || "", 
                                     password: user.password || "",
-                                    role: user.role as "user" | "admin" | "monitor"
+                                    role: user.role as "user" | "admin" | "monitor",
+                                    function: user.function
                                   });
                                   setNewName(user.name || "");
                                   setNewPassword(user.password || "");
@@ -326,7 +569,7 @@ export default function UsersPage() {
           <div className="bg-[#0071e3] p-8 text-white">
             <DialogHeader>
               <DialogTitle className="text-3xl font-heavy tracking-tight">Editar Perfil</DialogTitle>
-              <DialogDescription className="text-white/70 font-medium">
+              <DialogDescription className="text-white/80 font-medium">
                 Atualize as informações de <strong>{editingUser?.name}</strong>.
               </DialogDescription>
             </DialogHeader>
@@ -370,7 +613,7 @@ export default function UsersPage() {
                 <Key className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <Input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Nova senha..."
+                  placeholder="Nova senha (opcional)"
                   className="pl-11 pr-12 h-14 bg-slate-50 dark:bg-slate-900 border-0 rounded-2xl font-bold tracking-widest"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
