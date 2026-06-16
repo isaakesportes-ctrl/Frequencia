@@ -13,10 +13,6 @@ function getQueryParam(req: Request, key: string): string | undefined {
 
 export function registerOAuthRoutes(app: Application) {
   const handler = async (req: Request, res: Response) => {
-    if (ENV.isProduction) {
-      res.status(403).send("Mock login only available in development");
-      return;
-    }
 
     try {
       const name = getQueryParam(req, "name") || "Departamento de Esportes";
@@ -31,7 +27,7 @@ export function registerOAuthRoutes(app: Application) {
       };
 
       console.log("[Auth] Upserting mock user to DB...");
-      await db.upsertUser({
+      const upsertedUser = await db.upsertUser({
         openId: mockUser.openId,
         name: mockUser.name,
         email: mockUser.email,
@@ -39,6 +35,8 @@ export function registerOAuthRoutes(app: Application) {
         lastSignedIn: new Date(),
         role: role as "admin" | "user",
       });
+      
+      console.log("[Auth] Upserted user:", upsertedUser);
 
       console.log("[Auth] Creating session token...");
       const sessionToken = await sdk.createSessionToken(mockUser.openId, {

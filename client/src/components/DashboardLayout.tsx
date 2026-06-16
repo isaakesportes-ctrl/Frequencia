@@ -48,6 +48,25 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // #region debug-point G:dashboard-layout-init
+  (()=>{
+    const u = "http://127.0.0.1:7777/event";
+    const s = "login-render-hooks-error";
+    fetch(u, {
+      method: "POST",
+      body: JSON.stringify({
+        sessionId: s,
+        runId: "pre",
+        hypothesisId: "G",
+        location: "DashboardLayout.tsx:47",
+        msg: "[DEBUG] DashboardLayout rendered",
+        data: {},
+        ts: Date.now()
+      })
+    }).catch(()=>{});
+  })();
+  // #endregion
+
   const [sidebarWidth, setSidebarWidth] = useState(() => {
     const saved = localStorage.getItem(SIDEBAR_WIDTH_KEY);
     return saved ? Math.min(Math.max(parseInt(saved, 10), MIN_WIDTH), MAX_WIDTH) : DEFAULT_WIDTH;
@@ -59,6 +78,24 @@ export default function DashboardLayout({
   }, [sidebarWidth]);
 
   if (loading) {
+    // #region debug-point H:dashboard-layout-loading
+    (()=>{
+      const u = "http://127.0.0.1:7777/event";
+      const s = "login-render-hooks-error";
+      fetch(u, {
+        method: "POST",
+        body: JSON.stringify({
+          sessionId: s,
+          runId: "pre",
+          hypothesisId: "H",
+          location: "DashboardLayout.tsx:65",
+          msg: "[DEBUG] DashboardLayout loading, returning null",
+          data: {},
+          ts: Date.now()
+        })
+      }).catch(()=>{});
+    })();
+    // #endregion
     return null;
   }
 

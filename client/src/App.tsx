@@ -19,18 +19,94 @@ function ProtectedRoute({
   component: Component, 
   requiredRole 
 }: { 
-  component: React.ComponentType, 
-  requiredRole?: "admin" | "user" 
+  component: React.ComponentType; 
+  requiredRole?: "admin" | "user"; 
 }) {
+  // #region debug-point C:protected-route-init
+  (()=>{
+    const u = "http://127.0.0.1:7777/event";
+    const s = "login-render-hooks-error";
+    fetch(u, {
+      method: "POST",
+      body: JSON.stringify({
+        sessionId: s,
+        runId: "pre",
+        hypothesisId: "C",
+        location: "App.tsx:25",
+        msg: "[DEBUG] ProtectedRoute rendered",
+        data: { requiredRole },
+        ts: Date.now()
+      })
+    }).catch(()=>{});
+  })();
+  // #endregion
+  
   const { user, loading } = useAuth();
 
-  if (loading) return null;
+  if (loading) {
+    // #region debug-point D:protected-route-loading
+    (()=>{
+      const u = "http://127.0.0.1:7777/event";
+      const s = "login-render-hooks-error";
+      fetch(u, {
+        method: "POST",
+        body: JSON.stringify({
+          sessionId: s,
+          runId: "pre",
+          hypothesisId: "D",
+          location: "App.tsx:46",
+          msg: "[DEBUG] ProtectedRoute loading, returning null",
+          data: {},
+          ts: Date.now()
+        })
+      }).catch(()=>{});
+    })();
+    // #endregion
+    return null;
+  }
 
   if (!user) {
+    // #region debug-point E:protected-route-no-user
+    (()=>{
+      const u = "http://127.0.0.1:7777/event";
+      const s = "login-render-hooks-error";
+      fetch(u, {
+        method: "POST",
+        body: JSON.stringify({
+          sessionId: s,
+          runId: "pre",
+          hypothesisId: "E",
+          location: "App.tsx:68",
+          msg: "[DEBUG] ProtectedRoute no user, redirecting to /",
+          data: {},
+          ts: Date.now()
+        })
+      }).catch(()=>{});
+    })();
+    // #endregion
     window.location.href = "/";
     return null;
   }
 
+  // #region debug-point F:protected-route-user
+  (()=>{
+    const u = "http://127.0.0.1:7777/event";
+    const s = "login-render-hooks-error";
+    fetch(u, {
+      method: "POST",
+      body: JSON.stringify({
+        sessionId: s,
+        runId: "pre",
+        hypothesisId: "F",
+        location: "App.tsx:91",
+        msg: "[DEBUG] ProtectedRoute has user, checking role",
+        data: { user, requiredRole },
+        ts: Date.now()
+      })
+    }).catch(()=>{});
+  })();
+  // #endregion
+  
   if (requiredRole && user.role !== requiredRole && user.role !== "admin") {
     return (
       <DashboardLayout>

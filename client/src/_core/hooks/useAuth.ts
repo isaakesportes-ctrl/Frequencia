@@ -8,6 +8,25 @@ type UseAuthOptions = {
 };
 
 export function useAuth(options?: UseAuthOptions) {
+  // #region debug-point A:use-auth-init
+  (()=>{
+    const u = "http://127.0.0.1:7777/event";
+    const s = "login-render-hooks-error";
+    fetch(u, {
+      method: "POST",
+      body: JSON.stringify({
+        sessionId: s,
+        runId: "pre",
+        hypothesisId: "A",
+        location: "useAuth.ts:13",
+        msg: "[DEBUG] useAuth hook called",
+        data: { options },
+        ts: Date.now()
+      })
+    }).catch(()=>{});
+  })();
+  // #endregion
+
   const { redirectOnUnauthenticated = false, redirectPath } =
     options ?? {};
   const utils = trpc.useUtils();
@@ -51,16 +70,33 @@ export function useAuth(options?: UseAuthOptions) {
   const state = useMemo(() => {
     const activeUser = meQuery.data;
 
-    localStorage.setItem(
-      "manus-runtime-user-info",
-      JSON.stringify(activeUser)
-    );
-    return {
+    const result = {
       user: activeUser ?? null,
       loading: meQuery.isLoading || logoutMutation.isPending,
       error: meQuery.error ?? logoutMutation.error ?? null,
       isAuthenticated: Boolean(activeUser),
     };
+    
+    // #region debug-point B:use-auth-state
+    (()=>{
+      const u = "http://127.0.0.1:7777/event";
+      const s = "login-render-hooks-error";
+      fetch(u, {
+        method: "POST",
+        body: JSON.stringify({
+          sessionId: s,
+          runId: "pre",
+          hypothesisId: "B",
+          location: "useAuth.ts:58",
+          msg: "[DEBUG] useAuth state updated",
+          data: { result },
+          ts: Date.now()
+        })
+      }).catch(()=>{});
+    })();
+    // #endregion
+
+    return result;
   }, [
     meQuery.data,
     meQuery.error,
@@ -68,6 +104,14 @@ export function useAuth(options?: UseAuthOptions) {
     logoutMutation.error,
     logoutMutation.isPending,
   ]);
+
+  // Move o efeito colateral para useEffect
+  useEffect(() => {
+    localStorage.setItem(
+      "manus-runtime-user-info",
+      JSON.stringify(meQuery.data)
+    );
+  }, [meQuery.data]);
 
   useEffect(() => {
     if (!redirectOnUnauthenticated) return;
