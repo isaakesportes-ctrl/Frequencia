@@ -189,7 +189,20 @@ export default function Home() {
                       </div>
                       <div className="flex flex-col min-w-0">
                         <span className="text-[7px] font-black uppercase tracking-widest opacity-40">Docente</span>
-                        <span className="font-heavy text-xs leading-tight truncate">{aula.professor?.nome}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-heavy text-xs leading-tight truncate">{aula.professor?.nome}</span>
+                          {aula.tipoContrato && (
+                            <Badge 
+                              className={
+                                aula.tipoContrato.toUpperCase().includes('CLT') 
+                                  ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' 
+                                  : 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'
+                              }
+                            >
+                              {aula.tipoContrato}
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     </div>
 

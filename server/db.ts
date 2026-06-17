@@ -219,6 +219,7 @@ async function syncFromSpreadsheet() {
 
     const newAulas: Aula[] = [];
     const newProfessoresMap = new Map<string, number>();
+    const newProfessoresContrato = new Map<number, string>(); // New map for tipoContrato per professor
     const newLocaisMap = new Map<string, number>();
     let profCounter = 1;
     let localCounter = 1;
@@ -254,9 +255,24 @@ async function syncFromSpreadsheet() {
       const professorId = newProfessoresMap.get(professorNome)!;
       const finalProfessorNome = editedProfessorNames.get(professorId) || professorNome;
 
+      // Store the tipoContrato for this professor (if not already set)
+      if (!newProfessoresContrato.has(professorId)) {
+        newProfessoresContrato.set(professorId, String(tipoContrato || 'N/A'));
+      }
+
       // Normalize time format to HH:mm
       let formattedHorario = String(horario).trim();
-      if (/^\d{1,2}$/.test(formattedHorario)) {
+      
+      // Handle Excel serial time (decimal number between 0 and 1)
+      const serialTime = parseFloat(formattedHorario);
+      if (!isNaN(serialTime) && serialTime >= 0 && serialTime < 1) {
+        const totalMinutes = Math.round(serialTime * 24 * 60);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        formattedHorario = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+      } 
+      // Handle regular time formats
+      else if (/^\d{1,2}$/.test(formattedHorario)) {
         formattedHorario = `${formattedHorario.padStart(2, '0')}:00`;
       } else if (/^\d{1,2}:\d{2}$/.test(formattedHorario)) {
         formattedHorario = safeSplit(formattedHorario, ':').map(p => p.padStart(2, '0')).join(':');
@@ -311,6 +327,7 @@ async function syncFromSpreadsheet() {
     cachedProfessores = Array.from(newProfessoresMap.entries()).map(([nome, id]) => ({
       id,
       nome: editedProfessorNames.get(id) || nome,
+      tipoContrato: newProfessoresContrato.get(id) || 'N/A', // Include tipoContrato here!
       createdAt: new Date(),
       updatedAt: new Date()
     }));

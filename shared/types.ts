@@ -23,6 +23,7 @@ export interface Professor {
   nome: string;
   password?: string; // Adicionado para visualização direta de senhas de professores
   role?: string; // Adicionado para diferenciar entre Professor e Monitor
+  tipoContrato?: string; // Adicionado para classificar como CLT ou Terceiro
   createdAt: Date;
   updatedAt: Date;
 }

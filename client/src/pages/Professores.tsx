@@ -140,28 +140,41 @@ export default function Professores() {
                         ))
                       ) : professores.length > 0 ? (
                         professores.map((professor: any) => (
-                          <button
-                            key={professor.id}
-                            onClick={() => setSelectedProfessorId(professor.id)}
-                            className={`w-full text-left px-5 py-4 rounded-[1.5rem] transition-all duration-300 group flex items-center gap-4 ${
-                              selectedProfessorId === professor.id
-                                ? 'bg-[#0071e3] text-white shadow-xl shadow-blue-500/20'
-                                : 'bg-transparent text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
-                            }`}
-                          >
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors shrink-0 ${
-                              selectedProfessorId === professor.id ? 'bg-white/20' : 'bg-slate-100 dark:bg-slate-800'
-                            }`}>
-                              <User className={`w-5 h-5 ${selectedProfessorId === professor.id ? 'text-white' : 'text-slate-400'}`} />
-                            </div>
-                            <div className="space-y-0.5 min-w-0">
-                              <span className="font-bold text-base md:text-lg block truncate">{professor.nome}</span>
+                        <button
+                          key={professor.id}
+                          onClick={() => setSelectedProfessorId(professor.id)}
+                          className={`w-full text-left px-5 py-4 rounded-[1.5rem] transition-all duration-300 group flex items-center gap-4 ${
+                            selectedProfessorId === professor.id
+                              ? 'bg-[#0071e3] text-white shadow-xl shadow-blue-500/20'
+                              : 'bg-transparent text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
+                          }`}
+                        >
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors shrink-0 ${
+                            selectedProfessorId === professor.id ? 'bg-white/20' : 'bg-slate-100 dark:bg-slate-800'
+                          }`}>
+                            <User className={`w-5 h-5 ${selectedProfessorId === professor.id ? 'text-white' : 'text-slate-400'}`} />
+                          </div>
+                          <div className="space-y-0.5 min-w-0 flex-1">
+                            <span className="font-bold text-base md:text-lg block truncate">{professor.nome}</span>
+                            <div className="flex items-center gap-2">
                               {professor.role === "monitor" && (
                                 <span className="text-[9px] font-black uppercase tracking-widest opacity-60">Monitor</span>
                               )}
+                              {professor.tipoContrato && (
+                                <Badge 
+                                  className={
+                                    professor.tipoContrato.toUpperCase().includes('CLT') 
+                                      ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' 
+                                      : 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'
+                                  }
+                                >
+                                  {professor.tipoContrato}
+                                </Badge>
+                              )}
                             </div>
-                          </button>
-                        ))
+                          </div>
+                        </button>
+                      ))
                       ) : (
                         <div className="py-20 text-center space-y-4">
                           <User className="w-12 h-12 text-slate-200 mx-auto" />
@@ -252,6 +265,13 @@ export default function Professores() {
                           <Badge className="bg-white/20 text-white border-0 hover:bg-white/30 font-black px-4 py-1 text-[10px] uppercase tracking-widest mx-auto sm:mx-0">
                             {selectedProfessor.role === "monitor" ? "Monitor de Recreação" : "Corpo Docente"}
                           </Badge>
+                          {selectedProfessor.tipoContrato && (
+                            <Badge 
+                              className="bg-white/20 text-white border-0 hover:bg-white/30 font-black px-4 py-1 text-[10px] uppercase tracking-widest mx-auto sm:mx-0"
+                            >
+                              {selectedProfessor.tipoContrato}
+                            </Badge>
+                          )}
                           <h2 className="text-3xl md:text-5xl font-black tracking-tight">{selectedProfessor.nome}</h2>
                         </div>
                       </div>
