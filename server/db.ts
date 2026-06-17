@@ -66,7 +66,7 @@ interface AccessRequest {
   id: number;
   name: string;
   password: string;
-  role: "user" | "admin" | "monitor";
+  role: "user" | "admin" | "monitor" | "frequencia";
   function: string;
   requestedAt: Date;
 }
@@ -78,7 +78,7 @@ const userPasswords = new Map<number, string>();
 // Armazenamento de nomes editados (para sobrescrever o que vem da planilha)
 const editedProfessorNames = new Map<number, string>();
 // Armazenamento de cargos editados
-const userRoles = new Map<number, "user" | "admin" | "monitor">();
+const userRoles = new Map<number, "user" | "admin" | "monitor" | "frequencia">();
 
 // Armazenamento de aulas criadas/editadas manualmente
 let manualAulas = new Map<number, Aula>();
@@ -140,7 +140,7 @@ export async function getUsers() {
   }
 }
 
-export async function updateUserRole(id: number, newRole: "user" | "admin" | "monitor") {
+export async function updateUserRole(id: number, newRole: "user" | "admin" | "monitor" | "frequencia") {
   if (id === 1) return { success: false, error: "Não é possível alterar o cargo do Master" };
   
   const user = Array.from(mockUsers.values()).find(u => u.id === id);
@@ -192,7 +192,7 @@ export async function createUser(data: Partial<User>) {
     openId: String(id),
     name: data.name || "Novo Usuário",
     email: null,
-    role: data.role === "admin" ? "admin" : (data.role === "monitor" ? "monitor" : "user"),
+    role: data.role === "admin" ? "admin" : (data.role === "monitor" ? "monitor" : (data.role === "frequencia" ? "frequencia" : "user")),
     loginMethod: "password",
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -517,8 +517,8 @@ export async function upsertUser(data: Partial<User> & { openId: string }): Prom
   const existing = Array.from(mockUsers.values()).find(u => u.openId === data.openId);
   if (existing) {
     // Preserva o cargo de admin se for o usuário Master ou se vier explicitamente como admin
-    const role = (existing.id === 1 || data.role === "admin") ? "admin" : (data.role === "monitor" ? "monitor" : "user");
-    const updated: User = { ...existing, ...data, email: null, role: role as "admin" | "user" | "monitor", updatedAt: new Date() };
+    const role = (existing.id === 1 || data.role === "admin") ? "admin" : (data.role === "monitor" ? "monitor" : (data.role === "frequencia" ? "frequencia" : "user"));
+    const updated: User = { ...existing, ...data, email: null, role: role as "admin" | "user" | "monitor" | "frequencia", updatedAt: new Date() };
     mockUsers.set(updated.id, updated);
     return updated;
   }
@@ -531,7 +531,7 @@ export async function upsertUser(data: Partial<User> & { openId: string }): Prom
     name: data.name || "Usuário",
     email: null,
     loginMethod: data.loginMethod || "mock",
-    role: (data.role === "admin" ? "admin" : (data.role === "monitor" ? "monitor" : "user")) as "admin" | "user" | "monitor", 
+    role: (data.role === "admin" ? "admin" : (data.role === "monitor" ? "monitor" : (data.role === "frequencia" ? "frequencia" : "user"))) as "admin" | "user" | "monitor" | "frequencia", 
     createdAt: new Date(),
     updatedAt: new Date(),
     lastSignedIn: new Date(),
@@ -655,7 +655,7 @@ export async function loginWithNameAndPassword(name: string, password: string) {
   return { success: true, user };
 }
 
-export async function requestAccess(name: string, password: string, role: "user" | "admin" | "monitor", userFunction: string) {
+export async function requestAccess(name: string, password: string, role: "user" | "admin" | "monitor" | "frequencia", userFunction: string) {
   const id = accessRequestCounter++;
   pendingAccessRequests.set(id, {
     id,
@@ -672,7 +672,7 @@ export async function getPendingAccessRequests() {
   return Array.from(pendingAccessRequests.values());
 }
 
-export async function approveAccess(requestId: number, updates?: { name?: string; password?: string; role?: "user" | "admin" | "monitor"; function?: string }) {
+export async function approveAccess(requestId: number, updates?: { name?: string; password?: string; role?: "user" | "admin" | "monitor" | "frequencia"; function?: string }) {
   const request = pendingAccessRequests.get(requestId);
   if (!request) {
     return { success: false, error: "Solicitação não encontrada" };
