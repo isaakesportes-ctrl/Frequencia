@@ -29,6 +29,7 @@ const ADMIN_MENU = [
   { icon: LayoutDashboard, label: "Estatísticas", path: "/dashboard" },
   { icon: Calendar, label: "Grade Geral", path: "/grade" },
   { icon: ClipboardList, label: "Controle de Frequência", path: "/frequencia" },
+  { icon: Users, label: "Registros de Frequências", path: "/registros-frequencia" },
   { icon: Briefcase, label: "Gerenciar Aulas", path: "/admin" },
   { icon: UserCircle, label: "Professores", path: "/professores" },
   { icon: Users, label: "Equipe & Acessos", path: "/usuarios" },
@@ -39,6 +40,10 @@ const PROFESSOR_MENU = [
   { icon: Calendar, label: "Grade Geral", path: "/grade" },
   { icon: ClipboardList, label: "Controle de Frequência", path: "/frequencia" },
   { icon: UserCircle, label: "Minhas Aulas", path: "/professores" },
+];
+
+const APRENDIZ_MENU = [
+  { icon: ClipboardList, label: "Controle de Frequência", path: "/frequencia" },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
@@ -121,6 +126,8 @@ function DashboardLayoutContent({
   let menuItems;
   if (user?.role === "admin") {
     menuItems = ADMIN_MENU;
+  } else if (user?.role === "aprendiz") {
+    menuItems = APRENDIZ_MENU;
   } else if (isProfessor) {
     // For professors (openId starts with prof-) or monitors: show PROFESSOR_MENU
     menuItems = PROFESSOR_MENU;

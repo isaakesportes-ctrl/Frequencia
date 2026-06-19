@@ -1,0 +1,912 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "openId": "mock-user-admin",
+      "name": "Departamento de Esportes",
+      "email": null,
+      "password": "$2b$10$4Ff4ACeIRNpUDrGl3HAno.BbTvXrohQGhTQtOjGHrHixZs40YYLye",
+      "role": "admin",
+      "loginMethod": "password",
+      "approved": true,
+      "createdAt": "2026-06-18T12:41:19.518Z",
+      "updatedAt": "2026-06-18T17:40:30.631Z",
+      "lastSignedIn": "2026-06-18T17:40:30.629Z"
+    }
+  ],
+  "pendingAccessRequests": [],
+  "editedProfessorNames": {},
+  "editedProfessorTipoContrato": {},
+  "userRoles": {},
+  "userPasswords": {},
+  "manualAulas": {},
+  "presencas": [],
+  "frequenciaAulas": [
+    {
+      "id": 1,
+      "aulaId": 1,
+      "quantidadePresentes": 25,
+      "data": "2026-06-18",
+      "horario": "09:00",
+      "createdAt": "2026-06-18T12:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "aulaId": 2,
+      "quantidadePresentes": 18,
+      "data": "2026-06-18",
+      "horario": "10:00",
+      "createdAt": "2026-06-18T13:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "aulaId": 3,
+      "quantidadePresentes": 30,
+      "data": "2026-06-17",
+      "horario": "14:00",
+      "createdAt": "2026-06-17T14:00:00.000Z"
+    }
+  ],
+  "frequenciaKids": [
+    {
+      "id": 1,
+      "numeroSocio": "12345",
+      "nomeAluno": "João Silva",
+      "idade": 8,
+      "acompanhado": true,
+      "data": "2026-06-18",
+      "createdAt": "2026-06-18T12:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "numeroSocio": "67890",
+      "nomeAluno": "Maria Santos",
+      "idade": 10,
+      "acompanhado": false,
+      "data": "2026-06-18",
+      "createdAt": "2026-06-18T13:15:00.000Z"
+    },
+    {
+      "id": 3,
+      "numeroSocio": "11111",
+      "nomeAluno": "Pedro Costa",
+      "idade": 7,
+      "acompanhado": true,
+      "data": "2026-06-17",
+      "createdAt": "2026-06-17T15:45:00.000Z"
+    }
+  ],
+  "members": [],
+  "auditLog": [
+    {
+      "id": 1,
+      "action": "CREATE_ADMIN",
+      "userId": null,
+      "details": {
+        "name": "Departamento de Esportes"
+      },
+      "createdAt": "2026-06-18T12:41:19.533Z"
+    },
+    {
+      "id": 2,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T12:42:00.534Z"
+    },
+    {
+      "id": 3,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T12:42:00.728Z"
+    },
+    {
+      "id": 4,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T12:58:21.464Z"
+    },
+    {
+      "id": 5,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T12:58:22.180Z"
+    },
+    {
+      "id": 6,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T12:58:35.991Z"
+    },
+    {
+      "id": 7,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T12:58:36.707Z"
+    },
+    {
+      "id": 8,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T12:59:09.504Z"
+    },
+    {
+      "id": 9,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T12:59:09.823Z"
+    },
+    {
+      "id": 10,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T12:59:24.118Z"
+    },
+    {
+      "id": 11,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T12:59:24.473Z"
+    },
+    {
+      "id": 12,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T12:59:43.393Z"
+    },
+    {
+      "id": 13,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T12:59:43.943Z"
+    },
+    {
+      "id": 14,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:00:24.318Z"
+    },
+    {
+      "id": 15,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:00:24.654Z"
+    },
+    {
+      "id": 16,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:00:39.158Z"
+    },
+    {
+      "id": 17,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:00:39.424Z"
+    },
+    {
+      "id": 18,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:00:53.208Z"
+    },
+    {
+      "id": 19,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:00:53.521Z"
+    },
+    {
+      "id": 20,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:01:05.345Z"
+    },
+    {
+      "id": 21,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:01:05.699Z"
+    },
+    {
+      "id": 22,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:01:16.394Z"
+    },
+    {
+      "id": 23,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:01:16.762Z"
+    },
+    {
+      "id": 24,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:01:30.724Z"
+    },
+    {
+      "id": 25,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:01:31.000Z"
+    },
+    {
+      "id": 26,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:04:57.316Z"
+    },
+    {
+      "id": 27,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T13:05:18.758Z"
+    },
+    {
+      "id": 28,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:23:55.880Z"
+    },
+    {
+      "id": 29,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:23:56.000Z"
+    },
+    {
+      "id": 30,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:23:57.845Z"
+    },
+    {
+      "id": 31,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:24:00.696Z"
+    },
+    {
+      "id": 32,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:24:00.972Z"
+    },
+    {
+      "id": 33,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:24:10.348Z"
+    },
+    {
+      "id": 34,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:24:15.771Z"
+    },
+    {
+      "id": 35,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:24:17.362Z"
+    },
+    {
+      "id": 36,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:24:18.613Z"
+    },
+    {
+      "id": 37,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:24:19.692Z"
+    },
+    {
+      "id": 38,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:24:24.484Z"
+    },
+    {
+      "id": 39,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:24:28.179Z"
+    },
+    {
+      "id": 40,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:24:33.928Z"
+    },
+    {
+      "id": 41,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:24:47.705Z"
+    },
+    {
+      "id": 42,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:26:18.140Z"
+    },
+    {
+      "id": 43,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:26:21.636Z"
+    },
+    {
+      "id": 44,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:26:21.849Z"
+    },
+    {
+      "id": 45,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:27:44.076Z"
+    },
+    {
+      "id": 46,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:27:58.026Z"
+    },
+    {
+      "id": 47,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:28:01.892Z"
+    },
+    {
+      "id": 48,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:28:03.252Z"
+    },
+    {
+      "id": 49,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:28:05.048Z"
+    },
+    {
+      "id": 50,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:28:12.210Z"
+    },
+    {
+      "id": 51,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:28:21.034Z"
+    },
+    {
+      "id": 52,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:28:22.854Z"
+    },
+    {
+      "id": 53,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:28:23.608Z"
+    },
+    {
+      "id": 54,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:28:26.975Z"
+    },
+    {
+      "id": 55,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:42:45.044Z"
+    },
+    {
+      "id": 56,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:43:44.454Z"
+    },
+    {
+      "id": 57,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:43:44.657Z"
+    },
+    {
+      "id": 58,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:43:44.926Z"
+    },
+    {
+      "id": 59,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:43:55.431Z"
+    },
+    {
+      "id": 60,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:43:55.598Z"
+    },
+    {
+      "id": 61,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:44:04.326Z"
+    },
+    {
+      "id": 62,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:44:04.493Z"
+    },
+    {
+      "id": 63,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:44:39.017Z"
+    },
+    {
+      "id": 64,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:44:42.292Z"
+    },
+    {
+      "id": 65,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:44:42.478Z"
+    },
+    {
+      "id": 66,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:45:22.227Z"
+    },
+    {
+      "id": 67,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:45:22.674Z"
+    },
+    {
+      "id": 68,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:45:25.104Z"
+    },
+    {
+      "id": 69,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:45:25.302Z"
+    },
+    {
+      "id": 70,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:45:36.536Z"
+    },
+    {
+      "id": 71,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:45:37.006Z"
+    },
+    {
+      "id": 72,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:45:38.809Z"
+    },
+    {
+      "id": 73,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:45:38.981Z"
+    },
+    {
+      "id": 74,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:45:47.619Z"
+    },
+    {
+      "id": 75,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:45:48.155Z"
+    },
+    {
+      "id": 76,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:45:49.428Z"
+    },
+    {
+      "id": 77,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:45:49.635Z"
+    },
+    {
+      "id": 78,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:46:10.287Z"
+    },
+    {
+      "id": 79,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:46:10.443Z"
+    },
+    {
+      "id": 80,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:46:45.768Z"
+    },
+    {
+      "id": 81,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:46:46.181Z"
+    },
+    {
+      "id": 82,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:46:47.906Z"
+    },
+    {
+      "id": 83,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:46:48.055Z"
+    },
+    {
+      "id": 84,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:47:32.901Z"
+    },
+    {
+      "id": 85,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:47:33.042Z"
+    },
+    {
+      "id": 86,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:47:53.993Z"
+    },
+    {
+      "id": 87,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:47:54.145Z"
+    },
+    {
+      "id": 88,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:48:36.479Z"
+    },
+    {
+      "id": 89,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:48:36.929Z"
+    },
+    {
+      "id": 90,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:48:37.116Z"
+    },
+    {
+      "id": 91,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:48:39.148Z"
+    },
+    {
+      "id": 92,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:48:39.325Z"
+    },
+    {
+      "id": 93,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:48:41.421Z"
+    },
+    {
+      "id": 94,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:48:44.979Z"
+    },
+    {
+      "id": 95,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:48:46.502Z"
+    },
+    {
+      "id": 96,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:48:57.661Z"
+    },
+    {
+      "id": 97,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:49:11.683Z"
+    },
+    {
+      "id": 98,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:49:15.304Z"
+    },
+    {
+      "id": 99,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:49:26.947Z"
+    },
+    {
+      "id": 100,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:50:59.016Z"
+    },
+    {
+      "id": 101,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:51:00.641Z"
+    },
+    {
+      "id": 102,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:51:01.874Z"
+    },
+    {
+      "id": 103,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T14:51:02.881Z"
+    },
+    {
+      "id": 104,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:23:45.383Z"
+    },
+    {
+      "id": 105,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:23:52.630Z"
+    },
+    {
+      "id": 106,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:23:55.756Z"
+    },
+    {
+      "id": 107,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:24:12.276Z"
+    },
+    {
+      "id": 108,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:24:12.341Z"
+    },
+    {
+      "id": 109,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:24:12.734Z"
+    },
+    {
+      "id": 110,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:24:13.180Z"
+    },
+    {
+      "id": 111,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:27:19.377Z"
+    },
+    {
+      "id": 112,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:27:19.532Z"
+    },
+    {
+      "id": 113,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:28:35.349Z"
+    },
+    {
+      "id": 114,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:28:35.510Z"
+    },
+    {
+      "id": 115,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:28:41.557Z"
+    },
+    {
+      "id": 116,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:28:41.644Z"
+    },
+    {
+      "id": 117,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-18T17:40:30.667Z"
+    }
+  ],
+  "counters": {
+    "manualAula": 10000,
+    "presenca": 1,
+    "frequenciaAula": 4,
+    "frequenciaKid": 4,
+    "member": 1,
+    "accessRequest": 1,
+    "auditLog": 118
+  }
+}

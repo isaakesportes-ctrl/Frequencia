@@ -3,7 +3,7 @@ import { z } from "zod";
 import { COOKIE_NAME } from "../shared/const.js";
 import { getSessionCookieOptions } from "./_core/cookies.js";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc.js";
-import { getAulas, getAulasByFilters, searchAulas, getAulaById, createAula, updateAula, deleteAula, getAllProfessores, getProfessorAulas, getAllLocais, getAulasStats, getUsers, createUser, deleteUser, updateUserPassword, updateUserName, updateUserRole, registrarPresenca, getPresencasByAula, removerPresenca, loginWithNameAndPassword, requestAccess, getPendingAccessRequests, approveAccess, rejectAccess, registrarFrequenciaAulas, getFrequenciaAulasByDateAndHorario, getAllFrequenciaAulas, registrarFrequenciaKids, getFrequenciaKidsByDate, getAllFrequenciaKids, getSocioByMatricula, uploadMembers, getMembers, getMemberByNumero, clearMembers } from "./db.js";
+import { getAulas, getAulasByFilters, searchAulas, getAulaById, createAula, updateAula, deleteAula, getAllProfessores, getProfessorAulas, getAllLocais, getAulasStats, getUsers, createUser, deleteUser, updateUserPassword, updateUserName, updateUserRole, updateProfessorTipoContrato, registrarPresenca, getPresencasByAula, removerPresenca, loginWithNameAndPassword, requestAccess, getPendingAccessRequests, approveAccess, rejectAccess, registrarFrequenciaAulas, getFrequenciaAulasByDateAndHorario, getAllFrequenciaAulas, registrarFrequenciaKids, getFrequenciaKidsByDate, getAllFrequenciaKids, getSocioByMatricula, uploadMembers, getMembers, getMemberByNumero, clearMembers } from "./db.js";
 
 export const appRouter = router({
   auth: router({
@@ -49,7 +49,7 @@ export const appRouter = router({
       .input(z.object({ 
         name: z.string(),
         password: z.string(),
-        role: z.enum(["user", "admin", "monitor"]),
+        role: z.enum(["user", "admin", "monitor", "aprendiz"]),
         function: z.string()
       }))
       .mutation(async ({ input }) => {
@@ -63,7 +63,7 @@ export const appRouter = router({
         requestId: z.number(),
         name: z.string().optional(),
         password: z.string().optional(),
-        role: z.enum(["user", "admin", "monitor"]).optional(),
+        role: z.enum(["user", "admin", "monitor", "aprendiz"]).optional(),
         function: z.string().optional()
       }))
       .mutation(async ({ input }) => {
@@ -117,7 +117,7 @@ export const appRouter = router({
     create: protectedProcedure
       .input(z.object({
         name: z.string(),
-        role: z.enum(["user", "admin", "monitor"])
+        role: z.enum(["user", "admin", "monitor", "aprendiz"])
       }))
       .mutation(async ({ input }) => {
         return await createUser(input);
@@ -146,7 +146,7 @@ export const appRouter = router({
     updateRole: protectedProcedure
       .input(z.object({
         id: z.number(),
-        role: z.enum(["user", "admin", "monitor"])
+        role: z.enum(["user", "admin", "monitor", "aprendiz"])
       }))
       .mutation(async ({ input }) => {
         return await updateUserRole(input.id, input.role);
@@ -224,6 +224,15 @@ export const appRouter = router({
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return await getProfessorAulas(input.id);
+      }),
+    
+    updateTipoContrato: protectedProcedure
+      .input(z.object({
+        professorId: z.number(),
+        tipoContrato: z.string()
+      }))
+      .mutation(async ({ input }) => {
+        return await updateProfessorTipoContrato(input.professorId, input.tipoContrato);
       }),
   }),
 

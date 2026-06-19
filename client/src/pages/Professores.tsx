@@ -1,11 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { User, Clock, MapPin, Users, Briefcase, Lock, Key, ArrowRight, Eye, EyeOff, Search, Plus, Trash2, CalendarDays } from "lucide-react";
+import { User, Clock, MapPin, Users, Briefcase, Lock, Key, ArrowRight, Eye, EyeOff, Search, Plus, Trash2, CalendarDays, Edit2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -18,6 +25,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { useAuth } from "@/_core/hooks/useAuth";
 
 export default function Professores() {
   const [selectedProfessorId, setSelectedProfessorId] = useState<number | null>(null);
@@ -26,6 +34,8 @@ export default function Professores() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [error, setError] = useState(false);
   const detailsRef = useRef<HTMLDivElement>(null);
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
   
   // Modal de Presença
   const [selectedAula, setSelectedAula] = useState<any | null>(null);
@@ -60,6 +70,13 @@ export default function Professores() {
     onSuccess: () => {
       toast.success("Presença removida");
       utils.attendance.list.invalidate({ aulaId: selectedAula.id, data: currentDate });
+    }
+  });
+
+  const updateTipoContrato = trpc.professores.updateTipoContrato.useMutation({
+    onSuccess: () => {
+      toast.success("Tipo de contrato atualizado");
+      utils.professores.list.invalidate();
     }
   });
 
@@ -266,11 +283,39 @@ export default function Professores() {
                             {selectedProfessor.role === "monitor" ? "Monitor de Recreação" : "Corpo Docente"}
                           </Badge>
                           {selectedProfessor.tipoContrato && (
-                            <Badge 
-                              className="bg-white/20 text-white border-0 hover:bg-white/30 font-black px-4 py-1 text-[10px] uppercase tracking-widest mx-auto sm:mx-0"
-                            >
-                              {selectedProfessor.tipoContrato}
-                            </Badge>
+                            isAdmin ? (
+                              <div className="flex items-center gap-2 justify-center sm:justify-start">
+                                <Badge 
+                                  className="bg-white/20 text-white border-0 hover:bg-white/30 font-black px-4 py-1 text-[10px] uppercase tracking-widest"
+                                >
+                                  {selectedProfessor.tipoContrato}
+                                </Badge>
+                                <Select
+                                  value={selectedProfessor.tipoContrato}
+                                  onValueChange={(value) => {
+                                    updateTipoContrato.mutate({
+                                      professorId: selectedProfessor.id,
+                                      tipoContrato: value
+                                    });
+                                  }}
+                                >
+                                  <SelectTrigger className="h-8 w-32 bg-white/10 border-white/20 text-white text-[10px] font-bold uppercase tracking-widest">
+                                    <SelectValue placeholder="Tipo de Contrato" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="CLT">CLT</SelectItem>
+                                    <SelectItem value="Terceiro">Terceiro</SelectItem>
+                                    <SelectItem value="Estagiário">Estagiário</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            ) : (
+                              <Badge 
+                                className="bg-white/20 text-white border-0 hover:bg-white/30 font-black px-4 py-1 text-[10px] uppercase tracking-widest mx-auto sm:mx-0"
+                              >
+                                {selectedProfessor.tipoContrato}
+                              </Badge>
+                            )
                           )}
                           <h2 className="text-3xl md:text-5xl font-black tracking-tight">{selectedProfessor.nome}</h2>
                         </div>

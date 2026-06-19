@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
@@ -13,6 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import UsersPage from "./pages/Users";
 import FrequenciaPage from "./pages/FrequenciaPage";
 import MembersPage from "./pages/MembersPage";
+import RegistrosFrequenciaPage from "./pages/RegistrosFrequencia";
 import DashboardLayout from "./components/DashboardLayout";
 import AuthSelectionPage from "./pages/AuthSelectionPage";
 import { useAuth } from "./_core/hooks/useAuth";
@@ -22,9 +23,10 @@ function ProtectedRoute({
   requiredRole 
 }: { 
   component: React.ComponentType; 
-  requiredRole?: "admin" | "user"; 
+  requiredRole?: "admin" | "user" | "aprendiz"; 
 }) {
   const { user, loading } = useAuth();
+  const [location] = useLocation();
 
   if (loading) {
     return null;
@@ -32,6 +34,12 @@ function ProtectedRoute({
 
   if (!user) {
     window.location.href = "/";
+    return null;
+  }
+
+  // If user is an aprendiz, only allow access to /frequencia
+  if (user.role === "aprendiz" && location !== "/frequencia") {
+    window.location.href = "/frequencia";
     return null;
   }
 
@@ -82,6 +90,9 @@ function Router() {
       </Route>
       <Route path="/socios">
         <ProtectedRoute component={MembersPage} requiredRole="admin" />
+      </Route>
+      <Route path="/registros-frequencia">
+        <ProtectedRoute component={RegistrosFrequenciaPage} requiredRole="admin" />
       </Route>
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}

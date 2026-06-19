@@ -1,0 +1,3 @@
+
+# Allow build scripts for bcrypt and better-sqlite3
+unsafe-perm=true
