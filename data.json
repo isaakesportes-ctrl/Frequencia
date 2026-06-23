@@ -10,8 +10,8 @@
       "loginMethod": "password",
       "approved": true,
       "createdAt": "2026-06-18T12:41:19.518Z",
-      "updatedAt": "2026-06-23T12:48:34.940Z",
-      "lastSignedIn": "2026-06-23T12:48:34.938Z"
+      "updatedAt": "2026-06-23T12:55:57.047Z",
+      "lastSignedIn": "2026-06-23T12:55:57.046Z"
     }
   ],
   "pendingAccessRequests": [],
@@ -940,6 +940,27 @@
       "userId": 1,
       "details": {},
       "createdAt": "2026-06-23T12:48:34.960Z"
+    },
+    {
+      "id": 124,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T12:55:52.533Z"
+    },
+    {
+      "id": 125,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T12:55:56.530Z"
+    },
+    {
+      "id": 126,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T12:55:57.083Z"
     }
   ],
   "counters": {
@@ -949,6 +970,6 @@
     "frequenciaKid": 4,
     "member": 1,
     "accessRequest": 1,
-    "auditLog": 124
+    "auditLog": 127
   }
 }
