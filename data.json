@@ -10,8 +10,8 @@
       "loginMethod": "password",
       "approved": true,
       "createdAt": "2026-06-18T12:41:19.518Z",
-      "updatedAt": "2026-06-23T13:45:42.748Z",
-      "lastSignedIn": "2026-06-23T13:45:42.747Z"
+      "updatedAt": "2026-06-23T14:01:14.999Z",
+      "lastSignedIn": "2026-06-23T14:01:14.997Z"
     }
   ],
   "pendingAccessRequests": [],
@@ -1383,6 +1383,69 @@
       "userId": 1,
       "details": {},
       "createdAt": "2026-06-23T13:45:42.757Z"
+    },
+    {
+      "id": 187,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:57:44.838Z"
+    },
+    {
+      "id": 188,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:57:45.296Z"
+    },
+    {
+      "id": 189,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:57:45.548Z"
+    },
+    {
+      "id": 190,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:57:47.321Z"
+    },
+    {
+      "id": 191,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:57:48.448Z"
+    },
+    {
+      "id": 192,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:57:49.124Z"
+    },
+    {
+      "id": 193,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:57:57.194Z"
+    },
+    {
+      "id": 194,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:59:50.418Z"
+    },
+    {
+      "id": 195,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T14:01:15.032Z"
     }
   ],
   "counters": {
@@ -1392,6 +1455,6 @@
     "frequenciaKid": 4,
     "member": 1,
     "accessRequest": 1,
-    "auditLog": 187
+    "auditLog": 196
   }
 }
