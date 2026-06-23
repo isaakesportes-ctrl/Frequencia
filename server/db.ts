@@ -15,10 +15,10 @@ const DB_PATH = path.resolve(process.cwd(), 'data.json');
 // Database type definitions
 interface DatabaseData {
   users: (User & { approved: boolean; function?: string; password?: string })[];
-  pendingAccessRequests: { id: number; name: string; password: string; role: 'user' | 'admin' | 'monitor' | 'aprendiz'; function: string; requestedAt: string }[];
+  pendingAccessRequests: { id: number; name: string; password: string; role: 'user' | 'admin' | 'monitor' | 'aprendiz' | 'frequencia'; function: string; requestedAt: string }[];
   editedProfessorNames: Record<number, string>;
   editedProfessorTipoContrato: Record<number, string>;
-  userRoles: Record<number, 'user' | 'admin' | 'monitor' | 'aprendiz'>;
+  userRoles: Record<number, 'user' | 'admin' | 'monitor' | 'aprendiz' | 'frequencia'>;
   userPasswords: Record<number, string>;
   manualAulas: Record<number, Aula>;
   presencas: AulaPresenca[];
@@ -309,7 +309,7 @@ export async function getUsers() {
   return users;
 }
 
-export async function updateUserRole(id: number, newRole: 'user' | 'admin' | 'monitor') {
+export async function updateUserRole(id: number, newRole: 'user' | 'admin' | 'monitor' | 'aprendiz') {
   if (id === 1) return { success: false, error: "Não é possível alterar o cargo do Master" };
 
   await db.read();
@@ -390,7 +390,7 @@ export async function createUser(data: Partial<User>) {
     openId: String(id),
     name: data.name || "Novo Usuário",
     email: null,
-    role: data.role === "admin" ? "admin" : (data.role === "monitor" ? "monitor" : "user"),
+    role: data.role === "admin" ? "admin" : (data.role === "monitor" ? "monitor" : (data.role === "aprendiz" ? "aprendiz" : (data.role === "frequencia" ? "frequencia" : "user"))),
     loginMethod: "password",
     approved: true,
     createdAt: new Date(),
@@ -555,7 +555,7 @@ export async function upsertUser(data: Partial<User> & { openId: string }): Prom
   await db.read();
   const existing = db.data.users.find(u => u.openId === data.openId);
   if (existing) {
-    const role = (existing.id === 1 || data.role === "admin") ? "admin" : (data.role === "monitor" ? "monitor" : "user");
+    const role = (existing.id === 1 || data.role === "admin") ? "admin" : (data.role === "monitor" ? "monitor" : (data.role === "aprendiz" ? "aprendiz" : (data.role === "frequencia" ? "frequencia" : "user")));
     const updated = { ...existing, ...data, role, updatedAt: new Date(), email: null };
     const idx = db.data.users.findIndex(u => u.id === existing.id);
     db.data.users[idx] = updated;
@@ -577,7 +577,7 @@ export async function upsertUser(data: Partial<User> & { openId: string }): Prom
     name: data.name || "Usuário",
     email: null,
     loginMethod: data.loginMethod || "password",
-    role: (data.role === "admin" ? "admin" : (data.role === "monitor" ? "monitor" : "user")) as any,
+    role: (data.role === "admin" ? "admin" : (data.role === "monitor" ? "monitor" : (data.role === "aprendiz" ? "aprendiz" : (data.role === "frequencia" ? "frequencia" : "user")))) as any,
     approved: true,
     createdAt: now,
     updatedAt: now,
@@ -721,7 +721,7 @@ export async function loginWithNameAndPassword(name: string, password: string) {
   return { success: true, user };
 }
 
-export async function requestAccess(name: string, password: string, role: 'user' | 'admin' | 'monitor', userFunction: string) {
+export async function requestAccess(name: string, password: string, role: 'user' | 'admin' | 'monitor' | 'aprendiz' | 'frequencia', userFunction: string) {
   await db.read();
   const hashedPassword = await hashPassword(password);
   const request = {
@@ -746,7 +746,7 @@ export async function getPendingAccessRequests() {
   }));
 }
 
-export async function approveAccess(requestId: number, updates?: { name?: string; password?: string; role?: 'user' | 'admin' | 'monitor'; function?: string }) {
+export async function approveAccess(requestId: number, updates?: { name?: string; password?: string; role?: 'user' | 'admin' | 'monitor' | 'aprendiz' | 'frequencia'; function?: string }) {
   await db.read();
   const request = db.data.pendingAccessRequests.find(r => r.id === requestId);
   if (!request) return { success: false, error: "Solicitação não encontrada" };

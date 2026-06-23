@@ -12,7 +12,7 @@ export interface User {
   email: string | null;
   password?: string | null; // Adicionado para controle de acesso dos professores
   loginMethod: string | null;
-  role: "user" | "admin" | "monitor" | "aprendiz";
+  role: "user" | "admin" | "monitor" | "aprendiz" | "frequencia";
   createdAt: Date;
   updatedAt: Date;
   lastSignedIn: Date;
@@ -22,8 +22,8 @@ export interface Professor {
   id: number;
   nome: string;
   password?: string; // Adicionado para visualização direta de senhas de professores
-  role?: string; // Adicionado para diferenciar entre Professor e Monitor
-  tipoContrato?: string; // Adicionado para classificar como CLT ou Terceiro
+  role?: string; // Adicionado para diferenciar entre Professor e Monitor       
+  tipoContrato?: string; // Adicionado para classificar como CLT ou Terceiro    
   createdAt: Date;
   updatedAt: Date;
 }

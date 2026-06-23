@@ -67,24 +67,6 @@ export default function DashboardLayout({
   }, [sidebarWidth]);
 
   if (loading) {
-    // #region debug-point H:dashboard-layout-loading
-    (()=>{
-      const u = "http://127.0.0.1:7777/event";
-      const s = "login-render-hooks-error";
-      fetch(u, {
-        method: "POST",
-        body: JSON.stringify({
-          sessionId: s,
-          runId: "pre",
-          hypothesisId: "H",
-          location: "DashboardLayout.tsx:65",
-          msg: "[DEBUG] DashboardLayout loading, returning null",
-          data: {},
-          ts: Date.now()
-        })
-      }).catch(()=>{});
-    })();
-    // #endregion
     return null;
   }
 
@@ -119,24 +101,26 @@ function DashboardLayoutContent({
   const [isResizing, setIsResizing] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   
-  // Check if user is a professor (openId starts with "prof-") OR admin/monitor
-  const isProfessor = user?.openId?.startsWith("prof-") || user?.role === "admin" || user?.role === "monitor";
+  // Menu para usuários com acesso apenas a Frequência
+  const FREQUENCIA_MENU = [
+    { icon: Calendar, label: "Grade Geral", path: "/grade" },
+    { icon: ClipboardList, label: "Controle de Frequência", path: "/frequencia" },
+  ];
+
+  // Determina menu items baseado no tipo de usuário
+  let menuItems = ADMIN_MENU;
   
   // Build menu based on user type
-  let menuItems;
   if (user?.role === "admin") {
     menuItems = ADMIN_MENU;
   } else if (user?.role === "aprendiz") {
     menuItems = APRENDIZ_MENU;
-  } else if (isProfessor) {
-    // For professors (openId starts with prof-) or monitors: show PROFESSOR_MENU
+  } else if (user?.role === "frequencia" || user?.email?.includes("frequencia") || user?.displayName?.includes("Frequência")) {
+    menuItems = FREQUENCIA_MENU;
+  } else if (user?.role === "monitor" || user?.email?.includes("prof") || user?.displayName?.includes("Professor")) {
     menuItems = PROFESSOR_MENU;
   } else {
-    // For regular users: show only Grade Geral and Controle de Frequência, hide Minhas Aulas
-    menuItems = [
-      { icon: Calendar, label: "Grade Geral", path: "/grade" },
-      { icon: ClipboardList, label: "Controle de Frequência", path: "/frequencia" },
-    ];
+    menuItems = PROFESSOR_MENU;
   }
   const isMobile = useIsMobile();
   const { setOpenMobile } = useSidebar();
@@ -183,15 +167,15 @@ function DashboardLayoutContent({
                   <button className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
                     <Avatar className="h-full w-full">
                       <AvatarFallback className="text-[10px] font-black">
-                        {user?.name?.charAt(0).toUpperCase()}
+                        {(user?.displayName?.charAt(0) || user?.email?.charAt(0) || "U").toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl p-1 shadow-2xl border-slate-100 dark:border-slate-800">
                   <div className="px-3 py-2 border-b border-slate-50 dark:border-slate-800 mb-1">
-                    <p className="text-xs font-heavy truncate">{user?.name}</p>
-                    <p className="text-[9px] font-bold text-blue-600 uppercase tracking-widest">{user?.role}</p>
+                    <p className="text-xs font-heavy truncate">{user?.displayName || user?.email}</p>
+                    <p className="text-[9px] font-bold text-blue-600 uppercase tracking-widest">Usuário</p>
                   </div>
                   <DropdownMenuItem
                     onClick={() => logout()}
@@ -273,16 +257,16 @@ function DashboardLayoutContent({
                 <button className="flex items-center gap-2 rounded-xl p-1 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300 w-full group focus:outline-none">
                   <Avatar className="h-7 w-7 border-2 border-white dark:border-slate-800 shadow-sm shrink-0">
                     <AvatarFallback className="bg-slate-100 text-slate-900 font-black text-[9px]">
-                      {user?.name?.charAt(0).toUpperCase()}
+                      {(user?.displayName?.charAt(0) || user?.email?.charAt(0) || "U").toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   {(!isCollapsed || isMobile) && (
                     <div className="flex-1 min-w-0 text-left">
                       <p className="text-[11px] font-heavy truncate leading-none mb-0.5">
-                        {user?.name || "User"}
+                        {user?.displayName || user?.email || "User"}
                       </p>
                       <p className="text-[7px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">
-                        {user?.id === 1 ? "MASTER" : user?.role}
+                        Usuário
                       </p>
                     </div>
                   )}
