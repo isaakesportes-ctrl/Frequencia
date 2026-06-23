@@ -10,8 +10,8 @@
       "loginMethod": "password",
       "approved": true,
       "createdAt": "2026-06-18T12:41:19.518Z",
-      "updatedAt": "2026-06-18T17:40:30.631Z",
-      "lastSignedIn": "2026-06-18T17:40:30.629Z"
+      "updatedAt": "2026-06-23T12:48:34.940Z",
+      "lastSignedIn": "2026-06-23T12:48:34.938Z"
     }
   ],
   "pendingAccessRequests": [],
@@ -898,6 +898,48 @@
       "userId": 1,
       "details": {},
       "createdAt": "2026-06-18T17:40:30.667Z"
+    },
+    {
+      "id": 118,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T12:45:20.493Z"
+    },
+    {
+      "id": 119,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T12:45:20.782Z"
+    },
+    {
+      "id": 120,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T12:45:29.808Z"
+    },
+    {
+      "id": 121,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T12:45:31.116Z"
+    },
+    {
+      "id": 122,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T12:48:34.831Z"
+    },
+    {
+      "id": 123,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T12:48:34.960Z"
     }
   ],
   "counters": {
@@ -907,6 +949,6 @@
     "frequenciaKid": 4,
     "member": 1,
     "accessRequest": 1,
-    "auditLog": 118
+    "auditLog": 124
   }
 }

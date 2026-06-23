@@ -8,7 +8,7 @@ import bcrypt from 'bcryptjs';
 import { Aula, Professor, Local, AulasStats, User, AulaPresenca, FrequenciaAulas, FrequenciaKids, Socio, MemberEntry, MembersData } from '../shared/types.js';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __dirname = path.dirname(__filename);
 const SPREADSHEET_PATH = path.resolve(process.cwd(), 'grade.xlsx');
 const DB_PATH = path.resolve(process.cwd(), 'data.json');
 
@@ -64,6 +64,7 @@ const defaultData: DatabaseData = {
 
 const adapter = new JSONFile<DatabaseData>(DB_PATH);
 const db = new Low<DatabaseData>(adapter, defaultData);
+// @ts-ignore: tsx supports top-level await
 await db.read();
 
 // Cache for spreadsheet data
@@ -120,6 +121,7 @@ const ensureAdminExists = async () => {
     await logAudit('CREATE_ADMIN', null, { name: 'Departamento de Esportes' });
   }
 };
+// @ts-ignore: tsx supports top-level await
 await ensureAdminExists();
 
 const syncFromSpreadsheet = async () => {
@@ -383,7 +385,7 @@ export async function createUser(data: Partial<User>) {
   const id = maxId + 1;
   const defaultPassword = '123456';
   const hashedPassword = await hashPassword(defaultPassword);
-  const now = new Date().toISOString();
+  // const now = new Date().toISOString();
 
   const newUser: User & { approved: boolean } = {
     id,
@@ -555,10 +557,10 @@ export async function upsertUser(data: Partial<User> & { openId: string }): Prom
   await db.read();
   const existing = db.data.users.find(u => u.openId === data.openId);
   if (existing) {
-    const role = (existing.id === 1 || data.role === "admin") ? "admin" : (data.role === "monitor" ? "monitor" : "user");
+    const role = (existing.id === 1 || data.role === "admin") ? "admin" : (data.role === "monitor" ? "monitor" : "user") as 'user' | 'admin' | 'monitor' | 'aprendiz';
     const updated = { ...existing, ...data, role, updatedAt: new Date(), email: null };
     const idx = db.data.users.findIndex(u => u.id === existing.id);
-    db.data.users[idx] = updated;
+    db.data.users[idx] = updated as any;
     await db.write();
     await logAudit('UPDATE_USER', existing.id, {});
     return updated;
@@ -756,7 +758,7 @@ export async function approveAccess(requestId: number, updates?: { name?: string
   const finalPassword = updates?.password ? await hashPassword(updates.password) : request.password;
   const now = new Date();
 
-  const newUser: User & { approved: boolean; function?: string } = {
+  const newUser = {
     id,
     openId: `user-${id}`,
     name: updates?.name || request.name,
@@ -771,7 +773,7 @@ export async function approveAccess(requestId: number, updates?: { name?: string
     function: updates?.function || request.function
   };
 
-  db.data.users.push(newUser);
+  db.data.users.push(newUser as any);
   db.data.pendingAccessRequests = db.data.pendingAccessRequests.filter(r => r.id !== requestId);
   await db.write();
   await logAudit('APPROVE_ACCESS', id, { name: newUser.name });
