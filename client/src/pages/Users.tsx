@@ -1,10 +1,10 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Shield, User, Mail, ShieldAlert, Users, Plus, Edit, Trash2, Key, Eye, EyeOff, CheckCircle2, XCircle, Clock, Briefcase } from "lucide-react";
+import { User, Users, Plus, Edit, Trash2, Key, Eye, EyeOff, CheckCircle2, XCircle, Clock, Briefcase } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
-import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { toast } from "sonner";
 import { useState } from "react";
 import {
@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const container: Variants = {
+const container: any = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -43,26 +43,26 @@ interface AccessRequest {
   id: number;
   name: string;
   password: string;
-  role: "user" | "admin" | "monitor" | "frequencia";
+  role: "user" | "admin" | "monitor" | "aprendiz";
   function: string;
   requestedAt: Date;
 }
 
 export default function UsersPage() {
-  const { user: currentUser } = useAuth();
+  const { user: _currentUser } = useAuth();
   const utils = trpc.useUtils();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState<{ id: number; name: string; password?: string; role: "user" | "admin" | "monitor"; function?: string } | null>(null);
+  const [editingUser, setEditingUser] = useState<{ id: number; name: string; password?: string; role: "user" | "admin" | "monitor" | "aprendiz"; function?: string } | null>(null);
   const [newName, setNewName] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [newRole, setNewRole] = useState<"user" | "admin" | "monitor" | "frequencia">("user");
+  const [newRole, setNewRole] = useState<"user" | "admin" | "monitor" | "aprendiz">("user");
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({ name: "", role: "user" as "user" | "admin" | "monitor" | "frequencia" });
-  const [approveRequestId, setApproveRequestId] = useState<number | null>(null);
-  const [editingRequest, setEditingRequest] = useState<{ id: number; name: string; password: string; role: "user" | "admin" | "monitor" | "frequencia"; function: string } | null>(null);
+  const [formData, setFormData] = useState({ name: "", role: "user" as "user" | "admin" | "monitor" | "aprendiz" });
+  const [_approveRequestId, setApproveRequestId] = useState<number | null>(null);
+  const [editingRequest, setEditingRequest] = useState<{ id: number; name: string; password: string; role: "user" | "admin" | "monitor" | "aprendiz"; function: string } | null>(null);
 
   const { data: users, isLoading } = trpc.users.list.useQuery();
-  const { data: pendingRequests, isLoading: isLoadingRequests } = trpc.auth.getPendingRequests.useQuery();
+  const { data: pendingRequests } = trpc.auth.getPendingRequests.useQuery();
   
   const createMutation = trpc.users.create.useMutation({
     onSuccess: () => {
@@ -318,7 +318,7 @@ export default function UsersPage() {
                                   <SelectValue placeholder="Selecione o cargo" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 rounded-2xl">
-                                  <SelectItem value="frequencia" className="rounded-xl py-3">Apenas Frequência (Acesso Restrito)</SelectItem>
+                                  <SelectItem value="aprendiz" className="rounded-xl py-3">Aprendiz (Acesso Restrito)</SelectItem>
                                   <SelectItem value="user" className="rounded-xl py-3">Professor (Acesso Restrito)</SelectItem>
                                   <SelectItem value="monitor" className="rounded-xl py-3">Monitor de Recreação (Restrito)</SelectItem>
                                   <SelectItem value="admin" className="rounded-xl py-3">Administrador (Acesso Total)</SelectItem>
@@ -414,7 +414,7 @@ export default function UsersPage() {
                     Array.from({ length: 6 }).map((_, i) => (
                       <div key={i} className="h-32 w-full bg-slate-100 dark:bg-slate-800 animate-pulse rounded-2xl" />
                     ))
-                  ) : users?.filter((user: any) => user.role !== "frequencia").map((user: any) => (
+                  ) : users?.map((user: any) => (
                     <motion.div 
                       key={user.id}
                       variants={item}
@@ -439,9 +439,9 @@ export default function UsersPage() {
                                     <Badge className="bg-orange-600 text-white border-0 font-black px-2 py-0.5 text-[8px] uppercase tracking-widest">
                                       MONITOR
                                     </Badge>
-                                  ) : user.role === "frequencia" ? (
+                                  ) : user.role === "aprendiz" ? (
                                     <Badge className="bg-purple-600 text-white border-0 font-black px-2 py-0.5 text-[8px] uppercase tracking-widest">
-                                      FREQUÊNCIA
+                                      APRENDIZ
                                     </Badge>
                                   ) : user.id >= 1000 || user.role === "user" ? (
                                     <Badge className="bg-emerald-600 text-white border-0 font-black px-2 py-0.5 text-[8px] uppercase tracking-widest">
@@ -477,12 +477,12 @@ export default function UsersPage() {
                                     id: user.id, 
                                     name: user.name || "", 
                                     password: user.password || "",
-                                    role: user.role as "user" | "admin" | "monitor" | "frequencia",
+                                    role: user.role as "user" | "admin" | "monitor" | "aprendiz",
                                     function: user.function
                                   });
                                   setNewName(user.name || "");
                                   setNewPassword(user.password || "");
-                                  setNewRole(user.role as "user" | "admin" | "monitor" | "frequencia");
+                                  setNewRole(user.role as "user" | "admin" | "monitor" | "aprendiz");
                                 }}
                               >
                                 <Edit className="w-4 h-4" />
@@ -546,7 +546,7 @@ export default function UsersPage() {
                   <SelectValue placeholder="Selecione o cargo" />
                 </SelectTrigger>
                 <SelectContent className="bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 rounded-2xl">
-                  <SelectItem value="frequencia" className="rounded-xl py-3">Apenas Frequência (Acesso Restrito)</SelectItem>
+                  <SelectItem value="aprendiz" className="rounded-xl py-3">Aprendiz (Acesso Restrito)</SelectItem>
                   <SelectItem value="user" className="rounded-xl py-3">Professor (Acesso Restrito)</SelectItem>
                   <SelectItem value="monitor" className="rounded-xl py-3">Monitor de Recreação (Restrito)</SelectItem>
                   <SelectItem value="admin" className="rounded-xl py-3">Administrador (Acesso Total)</SelectItem>
@@ -606,7 +606,7 @@ export default function UsersPage() {
                   <SelectValue placeholder="Selecione o cargo" />
                 </SelectTrigger>
                 <SelectContent className="bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 rounded-2xl">
-                  <SelectItem value="frequencia" className="rounded-xl py-3">Apenas Frequência (Acesso Restrito)</SelectItem>
+                  <SelectItem value="aprendiz" className="rounded-xl py-3">Aprendiz (Acesso Restrito)</SelectItem>
                   <SelectItem value="user" className="rounded-xl py-3">Professor (Acesso Restrito)</SelectItem>
                   <SelectItem value="monitor" className="rounded-xl py-3">Monitor de Recreação (Restrito)</SelectItem>
                   <SelectItem value="admin" className="rounded-xl py-3">Administrador (Acesso Total)</SelectItem>

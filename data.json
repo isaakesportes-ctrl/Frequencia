@@ -10,8 +10,8 @@
       "loginMethod": "password",
       "approved": true,
       "createdAt": "2026-06-18T12:41:19.518Z",
-      "updatedAt": "2026-06-23T12:59:23.792Z",
-      "lastSignedIn": "2026-06-23T12:59:23.790Z"
+      "updatedAt": "2026-06-23T13:45:42.748Z",
+      "lastSignedIn": "2026-06-23T13:45:42.747Z"
     }
   ],
   "pendingAccessRequests": [],
@@ -968,6 +968,421 @@
       "userId": 1,
       "details": {},
       "createdAt": "2026-06-23T12:59:23.826Z"
+    },
+    {
+      "id": 128,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:03:54.427Z"
+    },
+    {
+      "id": 129,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:03:54.526Z"
+    },
+    {
+      "id": 130,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:03:54.906Z"
+    },
+    {
+      "id": 131,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:04:16.502Z"
+    },
+    {
+      "id": 132,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:04:26.531Z"
+    },
+    {
+      "id": 133,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:04:36.482Z"
+    },
+    {
+      "id": 134,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:04:50.459Z"
+    },
+    {
+      "id": 135,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:05:16.182Z"
+    },
+    {
+      "id": 136,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:05:16.684Z"
+    },
+    {
+      "id": 137,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:05:33.150Z"
+    },
+    {
+      "id": 138,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:05:33.235Z"
+    },
+    {
+      "id": 139,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:05:33.378Z"
+    },
+    {
+      "id": 140,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:05:56.563Z"
+    },
+    {
+      "id": 141,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:05:56.700Z"
+    },
+    {
+      "id": 142,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:06:18.113Z"
+    },
+    {
+      "id": 143,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:06:18.177Z"
+    },
+    {
+      "id": 144,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:06:18.269Z"
+    },
+    {
+      "id": 145,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:10:40.821Z"
+    },
+    {
+      "id": 146,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:10:41.448Z"
+    },
+    {
+      "id": 147,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:10:44.018Z"
+    },
+    {
+      "id": 148,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:10:44.227Z"
+    },
+    {
+      "id": 149,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:11:53.702Z"
+    },
+    {
+      "id": 150,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:11:54.673Z"
+    },
+    {
+      "id": 151,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:11:55.713Z"
+    },
+    {
+      "id": 152,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:11:56.952Z"
+    },
+    {
+      "id": 153,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:11:58.427Z"
+    },
+    {
+      "id": 154,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:11:58.876Z"
+    },
+    {
+      "id": 155,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:11:59.387Z"
+    },
+    {
+      "id": 156,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:12:35.030Z"
+    },
+    {
+      "id": 157,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:12:36.033Z"
+    },
+    {
+      "id": 158,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:12:38.246Z"
+    },
+    {
+      "id": 159,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:12:40.948Z"
+    },
+    {
+      "id": 160,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:12:43.294Z"
+    },
+    {
+      "id": 161,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:12:50.986Z"
+    },
+    {
+      "id": 162,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:12:51.330Z"
+    },
+    {
+      "id": 163,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:12:52.781Z"
+    },
+    {
+      "id": 164,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:12:54.416Z"
+    },
+    {
+      "id": 165,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:29:50.018Z"
+    },
+    {
+      "id": 166,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:29:56.180Z"
+    },
+    {
+      "id": 167,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:29:59.726Z"
+    },
+    {
+      "id": 168,
+      "action": "LOGIN",
+      "userId": 1,
+      "details": {
+        "name": "Departamento de Esportes"
+      },
+      "createdAt": "2026-06-23T13:43:15.357Z"
+    },
+    {
+      "id": 169,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:43:15.543Z"
+    },
+    {
+      "id": 170,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:43:16.068Z"
+    },
+    {
+      "id": 171,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:43:16.205Z"
+    },
+    {
+      "id": 172,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:43:16.325Z"
+    },
+    {
+      "id": 173,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:43:18.747Z"
+    },
+    {
+      "id": 174,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:43:22.234Z"
+    },
+    {
+      "id": 175,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:43:23.485Z"
+    },
+    {
+      "id": 176,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:43:32.691Z"
+    },
+    {
+      "id": 177,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:43:32.999Z"
+    },
+    {
+      "id": 178,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:44:21.097Z"
+    },
+    {
+      "id": 179,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:44:47.465Z"
+    },
+    {
+      "id": 180,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:44:47.547Z"
+    },
+    {
+      "id": 181,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:44:47.913Z"
+    },
+    {
+      "id": 182,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:44:56.545Z"
+    },
+    {
+      "id": 183,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:45:29.314Z"
+    },
+    {
+      "id": 184,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:45:29.712Z"
+    },
+    {
+      "id": 185,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:45:42.254Z"
+    },
+    {
+      "id": 186,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T13:45:42.757Z"
     }
   ],
   "counters": {
@@ -977,6 +1392,6 @@
     "frequenciaKid": 4,
     "member": 1,
     "accessRequest": 1,
-    "auditLog": 128
+    "auditLog": 187
   }
 }
