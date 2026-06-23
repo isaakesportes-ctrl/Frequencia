@@ -10,8 +10,8 @@
       "loginMethod": "password",
       "approved": true,
       "createdAt": "2026-06-18T12:41:19.518Z",
-      "updatedAt": "2026-06-23T12:55:57.047Z",
-      "lastSignedIn": "2026-06-23T12:55:57.046Z"
+      "updatedAt": "2026-06-23T12:59:23.792Z",
+      "lastSignedIn": "2026-06-23T12:59:23.790Z"
     }
   ],
   "pendingAccessRequests": [],
@@ -961,6 +961,13 @@
       "userId": 1,
       "details": {},
       "createdAt": "2026-06-23T12:55:57.083Z"
+    },
+    {
+      "id": 127,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-23T12:59:23.826Z"
     }
   ],
   "counters": {
@@ -970,6 +977,6 @@
     "frequenciaKid": 4,
     "member": 1,
     "accessRequest": 1,
-    "auditLog": 127
+    "auditLog": 128
   }
 }
