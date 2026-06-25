@@ -12,7 +12,7 @@ export interface User {
   email: string | null;
   password?: string | null; // Adicionado para controle de acesso dos professores
   loginMethod: string | null;
-  role: "user" | "admin" | "monitor" | "aprendiz";
+  role: "user" | "admin" | "monitor" | "aprendiz" | "corpo_docente";
   createdAt: Date;
   updatedAt: Date;
   lastSignedIn: Date;

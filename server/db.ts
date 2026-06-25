@@ -15,10 +15,10 @@ const DB_PATH = path.resolve(process.cwd(), 'data.json');
 // Database type definitions
 interface DatabaseData {
   users: (User & { approved: boolean; function?: string; password?: string })[];
-  pendingAccessRequests: { id: number; name: string; password: string; role: 'user' | 'admin' | 'monitor' | 'aprendiz'; function: string; requestedAt: string }[];
+  pendingAccessRequests: { id: number; name: string; password: string; role: 'user' | 'admin' | 'monitor' | 'aprendiz' | 'corpo_docente'; function: string; requestedAt: string }[];
   editedProfessorNames: Record<number, string>;
   editedProfessorTipoContrato: Record<number, string>;
-  userRoles: Record<number, 'user' | 'admin' | 'monitor' | 'aprendiz'>;
+  userRoles: Record<number, 'user' | 'admin' | 'monitor' | 'aprendiz' | 'corpo_docente'>;
   userPasswords: Record<number, string>;
   manualAulas: Record<number, Aula>;
   presencas: AulaPresenca[];
@@ -392,7 +392,7 @@ export async function createUser(data: Partial<User>) {
     openId: String(id),
     name: data.name || "Novo Usuário",
     email: null,
-    role: data.role === "admin" ? "admin" : (data.role === "monitor" ? "monitor" : (data.role === "aprendiz" ? "aprendiz" : "user")),
+    role: data.role === "admin" ? "admin" : (data.role === "monitor" ? "monitor" : (data.role === "aprendiz" ? "aprendiz" : (data.role === "corpo_docente" ? "corpo_docente" : "user"))),
     loginMethod: "password",
     approved: true,
     createdAt: new Date(),
@@ -557,7 +557,7 @@ export async function upsertUser(data: Partial<User> & { openId: string }): Prom
   await db.read();
   const existing = db.data.users.find(u => u.openId === data.openId);
   if (existing) {
-    const role = (existing.id === 1 || data.role === "admin") ? "admin" : (data.role === "monitor" ? "monitor" : "user");
+    const role = (existing.id === 1 || data.role === "admin") ? "admin" : (data.role === "monitor" ? "monitor" : (data.role === "aprendiz" ? "aprendiz" : (data.role === "corpo_docente" ? "corpo_docente" : "user")));
     const updated = { ...existing, ...data, role, updatedAt: new Date(), email: null };
     const idx = db.data.users.findIndex(u => u.id === existing.id);
     db.data.users[idx] = updated as any;
@@ -579,7 +579,7 @@ export async function upsertUser(data: Partial<User> & { openId: string }): Prom
     name: data.name || "Usuário",
     email: null,
     loginMethod: data.loginMethod || "password",
-    role: (data.role === "admin" ? "admin" : (data.role === "monitor" ? "monitor" : (data.role === "aprendiz" ? "aprendiz" : "user"))) as any,
+    role: (data.role === "admin" ? "admin" : (data.role === "monitor" ? "monitor" : (data.role === "aprendiz" ? "aprendiz" : (data.role === "corpo_docente" ? "corpo_docente" : "user")))) as any,
     approved: true,
     createdAt: now,
     updatedAt: now,
@@ -723,7 +723,7 @@ export async function loginWithNameAndPassword(name: string, password: string) {
   return { success: true, user };
 }
 
-export async function requestAccess(name: string, password: string, role: 'user' | 'admin' | 'monitor' | 'aprendiz', userFunction: string) {
+export async function requestAccess(name: string, password: string, role: 'user' | 'admin' | 'monitor' | 'aprendiz' | 'corpo_docente', userFunction: string) {
   await db.read();
   const hashedPassword = await hashPassword(password);
   const request = {
@@ -748,7 +748,7 @@ export async function getPendingAccessRequests() {
   }));
 }
 
-export async function approveAccess(requestId: number, updates?: { name?: string; password?: string; role?: 'user' | 'admin' | 'monitor' | 'aprendiz'; function?: string }) {
+export async function approveAccess(requestId: number, updates?: { name?: string; password?: string; role?: 'user' | 'admin' | 'monitor' | 'aprendiz' | 'corpo_docente'; function?: string }) {
   await db.read();
   const request = db.data.pendingAccessRequests.find(r => r.id === requestId);
   if (!request) return { success: false, error: "Solicitação não encontrada" };

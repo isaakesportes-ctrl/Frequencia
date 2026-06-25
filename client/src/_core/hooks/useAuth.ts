@@ -53,7 +53,7 @@ export function useAuth(options?: UseAuthOptions) {
     }
   }, [loginMutation, meQuery]);
 
-  const requestAccess = useCallback(async (name: string, password: string, role: "user" | "admin" | "monitor" | "aprendiz", func: string) => {
+  const requestAccess = useCallback(async (name: string, password: string, role: "user" | "admin" | "monitor" | "aprendiz" | "corpo_docente", func: string) => {
     try {
       setError(null);
       const result = await requestAccessMutation.mutateAsync({ name, password, role, function: func });

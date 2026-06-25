@@ -47,6 +47,11 @@ const APRENDIZ_MENU = [
   { icon: ClipboardList, label: "Controle de Frequência", path: "/frequencia" },
 ];
 
+const CORPO_DOCENTE_MENU = [
+  { icon: Calendar, label: "Grade Geral", path: "/grade" },
+  { icon: UserCircle, label: "Minhas Aulas", path: "/professores" },
+];
+
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
 const DEFAULT_WIDTH = 200;
 const MIN_WIDTH = 160;
@@ -79,13 +84,47 @@ export default function DashboardLayout({
         } as CSSProperties
       }
     >
-      <div className="flex h-screen w-full bg-[#f5f5f7] dark:bg-black overflow-hidden">
+      <div className="flex h-screen w-full bg-background overflow-hidden">
         <DashboardLayoutContent setSidebarWidth={setSidebarWidth}>
           {children}
         </DashboardLayoutContent>
       </div>
     </SidebarProvider>
   );
+}
+
+// Function to get role badge style
+function getRoleBadgeStyle(role: string) {
+  switch (role) {
+    case "admin":
+      return "bg-purple-100 text-purple-800";
+    case "user":
+    case "corpo_docente":
+      return "bg-blue-100 text-blue-800";
+    case "monitor":
+      return "bg-teal-100 text-teal-800";
+    case "aprendiz":
+      return "bg-amber-100 text-amber-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+}
+
+// Function to get role label
+function getRoleLabel(role: string) {
+  switch (role) {
+    case "admin":
+      return "Admin";
+    case "user":
+    case "corpo_docente":
+      return "Professor";
+    case "monitor":
+      return "Monitor";
+    case "aprendiz":
+      return "Aprendiz";
+    default:
+      return "Usuário";
+  }
 }
 
 function DashboardLayoutContent({
@@ -113,6 +152,8 @@ function DashboardLayoutContent({
     menuItems = APRENDIZ_MENU;
   } else if (user?.role === "monitor") {
     menuItems = PROFESSOR_MENU;
+  } else if (user?.role === "corpo_docente") {
+    menuItems = CORPO_DOCENTE_MENU;
   } else {
     menuItems = PROFESSOR_MENU;
   }
@@ -145,35 +186,40 @@ function DashboardLayoutContent({
       <div className="relative flex h-full flex-col md:flex-row w-full overflow-hidden" ref={sidebarRef}>
         {/* Mobile Header */}
         {isMobile && (
-          <header className="h-14 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-50/50 dark:border-slate-800/50 flex items-center justify-between px-4 shrink-0 z-40">
+          <header className="h-14 bg-card/80 backdrop-blur-xl border-b border-border flex items-center justify-between px-4 shrink-0 z-40">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-black dark:bg-white flex items-center justify-center shrink-0 shadow-md">
-                <Calendar className="h-3.5 w-3.5 text-white dark:text-black" />
+              <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center shrink-0 shadow-md">
+                <Calendar className="h-3.5 w-3.5 text-white" />
               </div>
               <div className="flex flex-col">
-                <span className="font-heavy text-[10px] tracking-tight leading-none uppercase">Sports</span>
-                <span className="text-[6px] font-black uppercase tracking-[0.15em] text-slate-400">Dept</span>
+                <span className="font-bold text-[10px] tracking-tight leading-none uppercase">Agenda</span>
+                <span className="text-[6px] font-extrabold uppercase tracking-[0.15em] text-muted-foreground">Master</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <SidebarTrigger className="h-8 w-8 rounded-lg hover:bg-muted">
+                <PanelLeft className="h-4 w-4" />
+              </SidebarTrigger>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+                  <button className="w-8 h-8 rounded-full bg-muted flex items-center justify-center overflow-hidden">
                     <Avatar className="h-full w-full">
-                      <AvatarFallback className="text-[10px] font-black">
+                      <AvatarFallback className="text-[10px] font-bold">
                         {(user?.name?.charAt(0) || "U").toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl p-1 shadow-2xl border-slate-100 dark:border-slate-800">
-                  <div className="px-3 py-2 border-b border-slate-50 dark:border-slate-800 mb-1">
-                    <p className="text-xs font-heavy truncate">{user?.name}</p>
-                    <p className="text-[9px] font-bold text-blue-600 uppercase tracking-widest">Usuário</p>
+                <DropdownMenuContent align="end" className="w-48 bg-card/90 backdrop-blur-xl rounded-xl p-1 shadow-2xl border-border">
+                  <div className="px-3 py-2 border-b border-border mb-1">
+                    <p className="text-xs font-bold truncate">{user?.name}</p>
+                    <p className={`text-[9px] font-bold uppercase tracking-widest ${getRoleBadgeStyle(user?.role || "")} px-2 py-0.5 rounded-full inline-block mt-1`}>
+                      {getRoleLabel(user?.role || "")}
+                    </p>
                   </div>
                   <DropdownMenuItem
                     onClick={() => logout()}
-                    className="flex items-center gap-2 px-3 py-2 text-red-600 dark:text-red-400 font-heavy text-xs rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-all cursor-pointer"
+                    className="flex items-center gap-2 px-3 py-2 text-destructive font-bold text-xs rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-all cursor-pointer"
                   >
                     <LogOut className="h-3.5 w-3.5" />
                     Sair da Conta
@@ -186,12 +232,12 @@ function DashboardLayoutContent({
 
         <Sidebar
           collapsible={isMobile ? "offcanvas" : "icon"}
-          className="border-r-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl"
+          className="border-r-0 bg-card/80 backdrop-blur-xl"
         >
-          <SidebarHeader className="h-14 justify-center px-4 border-b border-slate-50/50 dark:border-slate-800/50">
+          <SidebarHeader className="h-14 justify-center px-4 border-b border-border">
             <div className="flex items-center gap-2.5 w-full">
-              <div className="w-7 h-7 rounded-lg bg-black dark:bg-white flex items-center justify-center shrink-0 shadow-md">
-                <Calendar className="h-3.5 w-3.5 text-white dark:text-black" />
+              <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center shrink-0 shadow-md">
+                <Calendar className="h-3.5 w-3.5 text-white" />
               </div>
               {(!isCollapsed || isMobile) && (
                 <motion.div 
@@ -199,11 +245,11 @@ function DashboardLayoutContent({
                   animate={{ opacity: 1, x: 0 }}
                   className="flex flex-col min-w-0"
                 >
-                  <span className="font-heavy text-xs tracking-tight truncate leading-none">
-                    Sports
+                  <span className="font-bold text-xs tracking-tight truncate leading-none">
+                    Agenda
                   </span>
-                  <span className="text-[7px] font-black uppercase tracking-[0.15em] text-slate-400 mt-0.5">
-                    Dept
+                  <span className="text-[7px] font-extrabold uppercase tracking-[0.15em] text-muted-foreground mt-0.5">
+                    Master
                   </span>
                 </motion.div>
               )}
@@ -225,8 +271,8 @@ function DashboardLayoutContent({
                       tooltip={item.label}
                       className={`h-8 px-2.5 rounded-lg transition-all duration-300 group ${
                         isActive 
-                        ? "bg-[#0071e3] text-white shadow-md shadow-blue-500/10 hover:bg-[#0077ed]" 
-                        : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-slate-900"
+                        ? "bg-primary text-primary-foreground shadow-md" 
+                        : "hover:bg-muted text-muted-foreground hover:text-foreground"
                       }`}
                     >
                       <item.icon
@@ -245,22 +291,22 @@ function DashboardLayoutContent({
             </SidebarMenu>
           </SidebarContent>
 
-          <SidebarFooter className="p-2 border-t border-slate-50/50 dark:border-slate-800/50">
+          <SidebarFooter className="p-2 border-t border-border">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2 rounded-xl p-1 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300 w-full group focus:outline-none">
-                  <Avatar className="h-7 w-7 border-2 border-white dark:border-slate-800 shadow-sm shrink-0">
-                    <AvatarFallback className="bg-slate-100 text-slate-900 font-black text-[9px]">
+                <button className="flex items-center gap-2 rounded-xl p-1 hover:bg-muted transition-all duration-300 w-full group focus:outline-none">
+                  <Avatar className="h-7 w-7 border-2 border-card shadow-sm shrink-0">
+                    <AvatarFallback className="bg-muted text-foreground font-bold text-[9px]">
                       {(user?.name?.charAt(0) || "U").toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   {(!isCollapsed || isMobile) && (
                     <div className="flex-1 min-w-0 text-left">
-                      <p className="text-[11px] font-heavy truncate leading-none mb-0.5">
+                      <p className="text-[11px] font-bold truncate leading-none mb-0.5">
                         {user?.name || "User"}
                       </p>
-                      <p className="text-[7px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">
-                        Usuário
+                      <p className={`text-[7px] font-bold uppercase tracking-widest ${getRoleBadgeStyle(user?.role || "")} px-2 py-0.5 rounded-full inline-block`}>
+                        {getRoleLabel(user?.role || "")}
                       </p>
                     </div>
                   )}
@@ -269,11 +315,11 @@ function DashboardLayoutContent({
               <DropdownMenuContent
                 align="end"
                 side={isMobile ? "bottom" : "right"}
-                className="w-48 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-slate-100 dark:border-slate-800 rounded-xl p-1 shadow-2xl"
+                className="w-48 bg-card/80 backdrop-blur-xl border-border rounded-xl p-1 shadow-2xl"
               >
                 <DropdownMenuItem
                   onClick={() => logout()}
-                  className="flex items-center gap-2 px-3 py-2 text-red-600 dark:text-red-400 font-heavy text-xs rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-all cursor-pointer"
+                  className="flex items-center gap-2 px-3 py-2 text-destructive font-bold text-xs rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-all cursor-pointer"
                 >
                   <LogOut className="h-3.5 w-3.5" />
                   Sair da Conta
@@ -286,8 +332,8 @@ function DashboardLayoutContent({
         {!isMobile && (
           <div
             onMouseDown={() => setIsResizing(true)}
-            className={`absolute right-0 top-0 w-1 h-full cursor-col-resize z-50 transition-colors duration-300 hover:bg-[#0071e3] group ${
-              isResizing ? "bg-[#0071e3]" : ""
+            className={`absolute right-0 top-0 w-1 h-full cursor-col-resize z-50 transition-colors duration-300 hover:bg-primary group ${
+              isResizing ? "bg-primary" : ""
             }`}
           >
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -296,7 +342,7 @@ function DashboardLayoutContent({
           </div>
         )}
 
-        <SidebarInset className="flex-1 bg-[#f5f5f7] dark:bg-black overflow-y-auto">
+        <SidebarInset className="flex-1 bg-background overflow-y-auto">
           <div className={`h-full w-full p-4 md:p-8 ${isMobile ? "pb-24" : ""}`}>
             <AnimatePresence mode="wait">
               <motion.div
@@ -315,7 +361,7 @@ function DashboardLayoutContent({
 
         {/* Mobile Bottom Navigation */}
         {isMobile && (
-          <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border-t border-slate-100 dark:border-slate-800 flex items-center justify-around px-2 z-50 pb-safe">
+          <nav className="fixed bottom-0 left-0 right-0 h-16 bg-card/80 backdrop-blur-2xl border-t border-border flex items-center justify-around px-2 z-50 pb-safe">
             {menuItems.map((item) => {
               const isActive = location === item.path;
               return (
@@ -323,19 +369,19 @@ function DashboardLayoutContent({
                   key={item.path}
                   onClick={() => setLocation(item.path)}
                   className={`flex flex-col items-center justify-center gap-1 min-w-[64px] h-full transition-all duration-300 ${
-                    isActive ? "text-[#0071e3]" : "text-slate-400 hover:text-slate-600"
+                    isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  <div className={`p-1.5 rounded-xl transition-all duration-300 ${isActive ? "bg-blue-50 dark:bg-blue-900/20" : ""}`}>
+                  <div className={`p-1.5 rounded-xl transition-all duration-300 ${isActive ? "bg-muted" : ""}`}>
                     <item.icon className={`h-5 w-5 ${isActive ? "scale-110" : ""}`} />
                   </div>
-                  <span className={`text-[9px] font-black tracking-tight ${isActive ? "opacity-100" : "opacity-60"}`}>
+                  <span className={`text-[9px] font-bold tracking-tight ${isActive ? "opacity-100" : "opacity-60"}`}>
                     {item.label}
                   </span>
                   {isActive && (
                     <motion.div
                       layoutId="bottom-nav-active"
-                      className="absolute bottom-1 w-1 h-1 rounded-full bg-[#0071e3]"
+                      className="absolute bottom-1 w-1 h-1 rounded-full bg-primary"
                     />
                   )}
                 </button>

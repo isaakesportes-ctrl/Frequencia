@@ -1,13 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -43,58 +45,59 @@
 }
 
 :root {
-  --background: #fbfbfd;
-  --foreground: #1d1d1f;
+  --background: #f8f9ff;
+  --foreground: #0b1c30;
   --card: #ffffff;
-  --card-foreground: #1d1d1f;
+  --card-foreground: #0b1c30;
   --popover: #ffffff;
-  --popover-foreground: #1d1d1f;
-  --primary: #0071e3;
+  --popover-foreground: #0b1c30;
+  --primary: #006c49;
   --primary-foreground: #ffffff;
-  --secondary: #f5f5f7;
-  --secondary-foreground: #1d1d1f;
-  --muted: #f5f5f7;
-  --muted-foreground: #86868b;
-  --accent: #f5f5f7;
-  --accent-foreground: #1d1d1f;
-  --destructive: #ff3b30;
+  --secondary: #eff4ff;
+  --secondary-foreground: #0b1c30;
+  --muted: #eff4ff;
+  --muted-foreground: #64748b;
+  --accent: #6cf8bb;
+  --accent-foreground: #0b1c30;
+  --destructive: #ba1a1a;
   --destructive-foreground: #ffffff;
-  --border: #d2d2d7;
-  --input: #d2d2d7;
-  --ring: #0071e3;
-  --radius: 12px;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #006c49;
+  --radius: 0.5rem;
 }
 
 .dark {
-  --background: #000000;
-  --foreground: #f5f5f7;
-  --card: #1c1c1e;
-  --card-foreground: #f5f5f7;
-  --popover: #1c1c1e;
-  --popover-foreground: #f5f5f7;
-  --primary: #0071e3;
-  --primary-foreground: #ffffff;
-  --secondary: #2c2c2e;
-  --secondary-foreground: #f5f5f7;
-  --muted: #2c2c2e;
-  --muted-foreground: #86868b;
-  --accent: #2c2c2e;
-  --accent-foreground: #f5f5f7;
-  --destructive: #ff453a;
-  --destructive-foreground: #ffffff;
-  --border: #38383a;
-  --input: #38383a;
-  --ring: #0071e3;
+  --background: #0b1c30;
+  --foreground: #f8f9ff;
+  --card: #1e293b;
+  --card-foreground: #f8f9ff;
+  --popover: #1e293b;
+  --popover-foreground: #f8f9ff;
+  --primary: #6cf8bb;
+  --primary-foreground: #0b1c30;
+  --secondary: #334155;
+  --secondary-foreground: #f8f9ff;
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  --accent: #006c49;
+  --accent-foreground: #ffffff;
+  --destructive: #ffdad6;
+  --destructive-foreground: #ba1a1a;
+  --border: #334155;
+  --input: #334155;
+  --ring: #6cf8bb;
+  --radius: 0.5rem;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 @theme {
-  --font-sans: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: "Inter", sans-serif;
 }
 
 @layer base {

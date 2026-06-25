@@ -10,8 +10,22 @@
       "loginMethod": "password",
       "approved": true,
       "createdAt": "2026-06-18T12:41:19.518Z",
-      "updatedAt": "2026-06-23T14:01:14.999Z",
-      "lastSignedIn": "2026-06-23T14:01:14.997Z"
+      "updatedAt": "2026-06-25T11:54:47.379Z",
+      "lastSignedIn": "2026-06-25T11:54:47.378Z"
+    },
+    {
+      "id": 2,
+      "openId": "user-2",
+      "name": "Corpo Docente",
+      "email": null,
+      "password": "$2b$10$jqSmkKYWmUzxOqQqOGbcFuRLwfuJ2Yqw1oSb7FhioQXiJIsl2Cqs.",
+      "role": "user",
+      "loginMethod": "password",
+      "approved": true,
+      "createdAt": "2026-06-25T10:46:08.671Z",
+      "updatedAt": "2026-06-25T11:43:07.709Z",
+      "lastSignedIn": "2026-06-25T11:43:07.708Z",
+      "function": "Professor"
     }
   ],
   "pendingAccessRequests": [],
@@ -1446,6 +1460,722 @@
       "userId": 1,
       "details": {},
       "createdAt": "2026-06-23T14:01:15.032Z"
+    },
+    {
+      "id": 196,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:15.714Z"
+    },
+    {
+      "id": 197,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:15.823Z"
+    },
+    {
+      "id": 198,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:15.914Z"
+    },
+    {
+      "id": 199,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:18.669Z"
+    },
+    {
+      "id": 200,
+      "action": "LOGIN",
+      "userId": 1,
+      "details": {
+        "name": "Departamento de Esportes"
+      },
+      "createdAt": "2026-06-25T10:33:19.998Z"
+    },
+    {
+      "id": 201,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:20.053Z"
+    },
+    {
+      "id": 202,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:20.169Z"
+    },
+    {
+      "id": 203,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:20.431Z"
+    },
+    {
+      "id": 204,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:20.505Z"
+    },
+    {
+      "id": 205,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:20.575Z"
+    },
+    {
+      "id": 206,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:22.484Z"
+    },
+    {
+      "id": 207,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:24.273Z"
+    },
+    {
+      "id": 208,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:26.652Z"
+    },
+    {
+      "id": 209,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:27.159Z"
+    },
+    {
+      "id": 210,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:27.841Z"
+    },
+    {
+      "id": 211,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:31.954Z"
+    },
+    {
+      "id": 212,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:33.033Z"
+    },
+    {
+      "id": 213,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:37.642Z"
+    },
+    {
+      "id": 214,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:33:38.464Z"
+    },
+    {
+      "id": 215,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:34:12.506Z"
+    },
+    {
+      "id": 216,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:34:13.372Z"
+    },
+    {
+      "id": 217,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:35:19.806Z"
+    },
+    {
+      "id": 218,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:35:29.740Z"
+    },
+    {
+      "id": 219,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:37:28.882Z"
+    },
+    {
+      "id": 220,
+      "action": "REQUEST_ACCESS",
+      "userId": null,
+      "details": {
+        "name": "Departamento de Esportes"
+      },
+      "createdAt": "2026-06-25T10:43:58.589Z"
+    },
+    {
+      "id": 221,
+      "action": "REQUEST_ACCESS",
+      "userId": null,
+      "details": {
+        "name": "Corpo Docente"
+      },
+      "createdAt": "2026-06-25T10:44:38.444Z"
+    },
+    {
+      "id": 222,
+      "action": "LOGIN",
+      "userId": 1,
+      "details": {
+        "name": "Departamento de Esportes"
+      },
+      "createdAt": "2026-06-25T10:44:43.560Z"
+    },
+    {
+      "id": 223,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:44:43.638Z"
+    },
+    {
+      "id": 224,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:44:43.902Z"
+    },
+    {
+      "id": 225,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:44:43.978Z"
+    },
+    {
+      "id": 226,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:44:44.090Z"
+    },
+    {
+      "id": 227,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:44:45.875Z"
+    },
+    {
+      "id": 228,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:44:51.008Z"
+    },
+    {
+      "id": 229,
+      "action": "REJECT_ACCESS",
+      "userId": null,
+      "details": {
+        "requestId": 1
+      },
+      "createdAt": "2026-06-25T10:44:51.058Z"
+    },
+    {
+      "id": 230,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:44:51.095Z"
+    },
+    {
+      "id": 231,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:45:06.999Z"
+    },
+    {
+      "id": 232,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:45:16.008Z"
+    },
+    {
+      "id": 233,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:45:36.678Z"
+    },
+    {
+      "id": 234,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:45:54.694Z"
+    },
+    {
+      "id": 235,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:45:55.013Z"
+    },
+    {
+      "id": 236,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:00.500Z"
+    },
+    {
+      "id": 237,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:08.506Z"
+    },
+    {
+      "id": 238,
+      "action": "APPROVE_ACCESS",
+      "userId": 2,
+      "details": {
+        "name": "Corpo Docente"
+      },
+      "createdAt": "2026-06-25T10:46:08.687Z"
+    },
+    {
+      "id": 239,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:08.725Z"
+    },
+    {
+      "id": 240,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:12.381Z"
+    },
+    {
+      "id": 241,
+      "action": "LOGIN",
+      "userId": 2,
+      "details": {
+        "name": "Corpo Docente"
+      },
+      "createdAt": "2026-06-25T10:46:27.329Z"
+    },
+    {
+      "id": 242,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:27.408Z"
+    },
+    {
+      "id": 243,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:27.526Z"
+    },
+    {
+      "id": 244,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:27.837Z"
+    },
+    {
+      "id": 245,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:27.940Z"
+    },
+    {
+      "id": 246,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:30.027Z"
+    },
+    {
+      "id": 247,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:31.046Z"
+    },
+    {
+      "id": 248,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:33.511Z"
+    },
+    {
+      "id": 249,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:34.488Z"
+    },
+    {
+      "id": 250,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:35.296Z"
+    },
+    {
+      "id": 251,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:36.363Z"
+    },
+    {
+      "id": 252,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:46:48.332Z"
+    },
+    {
+      "id": 253,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:47:04.225Z"
+    },
+    {
+      "id": 254,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:47:25.381Z"
+    },
+    {
+      "id": 255,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:48:42.592Z"
+    },
+    {
+      "id": 256,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:49:53.716Z"
+    },
+    {
+      "id": 257,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T10:58:06.051Z"
+    },
+    {
+      "id": 258,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:06:27.375Z"
+    },
+    {
+      "id": 259,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:38:09.617Z"
+    },
+    {
+      "id": 260,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:38:14.867Z"
+    },
+    {
+      "id": 261,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:38:16.473Z"
+    },
+    {
+      "id": 262,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:38:16.633Z"
+    },
+    {
+      "id": 263,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:38:17.741Z"
+    },
+    {
+      "id": 264,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:38:17.875Z"
+    },
+    {
+      "id": 265,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:38:26.305Z"
+    },
+    {
+      "id": 266,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:40:11.298Z"
+    },
+    {
+      "id": 267,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:41:38.522Z"
+    },
+    {
+      "id": 268,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:41:51.213Z"
+    },
+    {
+      "id": 269,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:42:59.358Z"
+    },
+    {
+      "id": 270,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:42:59.548Z"
+    },
+    {
+      "id": 271,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:43:01.895Z"
+    },
+    {
+      "id": 272,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:43:03.246Z"
+    },
+    {
+      "id": 273,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:43:04.192Z"
+    },
+    {
+      "id": 274,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:43:04.662Z"
+    },
+    {
+      "id": 275,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:43:06.277Z"
+    },
+    {
+      "id": 276,
+      "action": "UPDATE_USER",
+      "userId": 2,
+      "details": {},
+      "createdAt": "2026-06-25T11:43:07.726Z"
+    },
+    {
+      "id": 277,
+      "action": "LOGIN",
+      "userId": 1,
+      "details": {
+        "name": "Departamento de Esportes"
+      },
+      "createdAt": "2026-06-25T11:52:32.229Z"
+    },
+    {
+      "id": 278,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:52:32.342Z"
+    },
+    {
+      "id": 279,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:52:32.648Z"
+    },
+    {
+      "id": 280,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:52:32.942Z"
+    },
+    {
+      "id": 281,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:52:33.067Z"
+    },
+    {
+      "id": 282,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:52:33.198Z"
+    },
+    {
+      "id": 283,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:52:38.008Z"
+    },
+    {
+      "id": 284,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:52:39.896Z"
+    },
+    {
+      "id": 285,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:52:42.204Z"
+    },
+    {
+      "id": 286,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:52:44.300Z"
+    },
+    {
+      "id": 287,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:52:47.384Z"
+    },
+    {
+      "id": 288,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:52:49.400Z"
+    },
+    {
+      "id": 289,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:52:52.056Z"
+    },
+    {
+      "id": 290,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:53:06.689Z"
+    },
+    {
+      "id": 291,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:54:34.208Z"
+    },
+    {
+      "id": 292,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:54:34.415Z"
+    },
+    {
+      "id": 293,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:54:34.772Z"
+    },
+    {
+      "id": 294,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:54:46.945Z"
+    },
+    {
+      "id": 295,
+      "action": "UPDATE_USER",
+      "userId": 1,
+      "details": {},
+      "createdAt": "2026-06-25T11:54:47.397Z"
     }
   ],
   "counters": {
@@ -1454,7 +2184,7 @@
     "frequenciaAula": 4,
     "frequenciaKid": 4,
     "member": 1,
-    "accessRequest": 1,
-    "auditLog": 196
+    "accessRequest": 3,
+    "auditLog": 296
   }
 }

@@ -43,7 +43,7 @@ interface AccessRequest {
   id: number;
   name: string;
   password: string;
-  role: "user" | "admin" | "monitor" | "aprendiz";
+  role: "user" | "admin" | "monitor" | "aprendiz" | "corpo_docente";
   function: string;
   requestedAt: Date;
 }
@@ -52,14 +52,14 @@ export default function UsersPage() {
   const { user: _currentUser } = useAuth();
   const utils = trpc.useUtils();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState<{ id: number; name: string; password?: string; role: "user" | "admin" | "monitor" | "aprendiz"; function?: string } | null>(null);
+  const [editingUser, setEditingUser] = useState<{ id: number; name: string; password?: string; role: "user" | "admin" | "monitor" | "aprendiz" | "corpo_docente"; function?: string } | null>(null);
   const [newName, setNewName] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [newRole, setNewRole] = useState<"user" | "admin" | "monitor" | "aprendiz">("user");
+  const [newRole, setNewRole] = useState<"user" | "admin" | "monitor" | "aprendiz" | "corpo_docente">("user");
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({ name: "", role: "user" as "user" | "admin" | "monitor" | "aprendiz" });
+  const [formData, setFormData] = useState({ name: "", role: "user" as "user" | "admin" | "monitor" | "aprendiz" | "corpo_docente" });
   const [_approveRequestId, setApproveRequestId] = useState<number | null>(null);
-  const [editingRequest, setEditingRequest] = useState<{ id: number; name: string; password: string; role: "user" | "admin" | "monitor" | "aprendiz"; function: string } | null>(null);
+  const [editingRequest, setEditingRequest] = useState<{ id: number; name: string; password: string; role: "user" | "admin" | "monitor" | "aprendiz" | "corpo_docente"; function: string } | null>(null);
 
   const { data: users, isLoading } = trpc.users.list.useQuery();
   const { data: pendingRequests } = trpc.auth.getPendingRequests.useQuery();
@@ -312,13 +312,14 @@ export default function UsersPage() {
                               <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Cargo / Permissão</Label>
                               <Select 
                                 value={editingRequest?.role} 
-                                onValueChange={(value: "user" | "admin" | "monitor") => setEditingRequest(prev => prev ? { ...prev, role: value } : null)}
+                                onValueChange={(value: "user" | "admin" | "monitor" | "aprendiz" | "corpo_docente") => setEditingRequest(prev => prev ? { ...prev, role: value } : null)}
                               >
                                 <SelectTrigger className="h-14 bg-slate-50 dark:bg-slate-900 border-0 rounded-2xl px-4 font-bold">
                                   <SelectValue placeholder="Selecione o cargo" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 rounded-2xl">
                                   <SelectItem value="aprendiz" className="rounded-xl py-3">Aprendiz (Acesso Restrito)</SelectItem>
+                                  <SelectItem value="corpo_docente" className="rounded-xl py-3">Corpo Docente (Acesso Restrito)</SelectItem>
                                   <SelectItem value="user" className="rounded-xl py-3">Professor (Acesso Restrito)</SelectItem>
                                   <SelectItem value="monitor" className="rounded-xl py-3">Monitor de Recreação (Restrito)</SelectItem>
                                   <SelectItem value="admin" className="rounded-xl py-3">Administrador (Acesso Total)</SelectItem>
@@ -443,6 +444,10 @@ export default function UsersPage() {
                                     <Badge className="bg-purple-600 text-white border-0 font-black px-2 py-0.5 text-[8px] uppercase tracking-widest">
                                       APRENDIZ
                                     </Badge>
+                                  ) : user.role === "corpo_docente" ? (
+                                    <Badge className="bg-cyan-600 text-white border-0 font-black px-2 py-0.5 text-[8px] uppercase tracking-widest">
+                                      CORPO DOCENTE
+                                    </Badge>
                                   ) : user.id >= 1000 || user.role === "user" ? (
                                     <Badge className="bg-emerald-600 text-white border-0 font-black px-2 py-0.5 text-[8px] uppercase tracking-widest">
                                       PROFESSOR
@@ -477,12 +482,12 @@ export default function UsersPage() {
                                     id: user.id, 
                                     name: user.name || "", 
                                     password: user.password || "",
-                                    role: user.role as "user" | "admin" | "monitor" | "aprendiz",
+                                    role: user.role as "user" | "admin" | "monitor" | "aprendiz" | "corpo_docente",
                                     function: user.function
                                   });
                                   setNewName(user.name || "");
                                   setNewPassword(user.password || "");
-                                  setNewRole(user.role as "user" | "admin" | "monitor" | "aprendiz");
+                                  setNewRole(user.role as "user" | "admin" | "monitor" | "aprendiz" | "corpo_docente");
                                 }}
                               >
                                 <Edit className="w-4 h-4" />
@@ -540,13 +545,14 @@ export default function UsersPage() {
               <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Cargo / Permissão</Label>
               <Select 
                 value={formData.role} 
-                onValueChange={(value: "user" | "admin" | "monitor") => setFormData({ ...formData, role: value })}
+                onValueChange={(value: "user" | "admin" | "monitor" | "aprendiz" | "corpo_docente") => setFormData({ ...formData, role: value })}
               >
                 <SelectTrigger className="h-14 bg-slate-50 dark:bg-slate-900 border-0 rounded-2xl px-4 font-bold">
                   <SelectValue placeholder="Selecione o cargo" />
                 </SelectTrigger>
                 <SelectContent className="bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 rounded-2xl">
                   <SelectItem value="aprendiz" className="rounded-xl py-3">Aprendiz (Acesso Restrito)</SelectItem>
+                  <SelectItem value="corpo_docente" className="rounded-xl py-3">Corpo Docente (Acesso Restrito)</SelectItem>
                   <SelectItem value="user" className="rounded-xl py-3">Professor (Acesso Restrito)</SelectItem>
                   <SelectItem value="monitor" className="rounded-xl py-3">Monitor de Recreação (Restrito)</SelectItem>
                   <SelectItem value="admin" className="rounded-xl py-3">Administrador (Acesso Total)</SelectItem>
@@ -599,7 +605,7 @@ export default function UsersPage() {
               <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Cargo / Permissão</Label>
               <Select 
                 value={newRole} 
-                onValueChange={(value: "user" | "admin" | "monitor") => setNewRole(value)}
+                onValueChange={(value: "user" | "admin" | "monitor" | "aprendiz" | "corpo_docente") => setNewRole(value)}
                 disabled={editingUser?.id === 1}
               >
                 <SelectTrigger className="h-14 bg-slate-50 dark:bg-slate-900 border-0 rounded-2xl px-4 font-bold">
@@ -607,6 +613,7 @@ export default function UsersPage() {
                 </SelectTrigger>
                 <SelectContent className="bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 rounded-2xl">
                   <SelectItem value="aprendiz" className="rounded-xl py-3">Aprendiz (Acesso Restrito)</SelectItem>
+                  <SelectItem value="corpo_docente" className="rounded-xl py-3">Corpo Docente (Acesso Restrito)</SelectItem>
                   <SelectItem value="user" className="rounded-xl py-3">Professor (Acesso Restrito)</SelectItem>
                   <SelectItem value="monitor" className="rounded-xl py-3">Monitor de Recreação (Restrito)</SelectItem>
                   <SelectItem value="admin" className="rounded-xl py-3">Administrador (Acesso Total)</SelectItem>

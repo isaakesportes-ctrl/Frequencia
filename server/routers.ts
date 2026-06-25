@@ -49,7 +49,7 @@ export const appRouter = router({
       .input(z.object({ 
         name: z.string(),
         password: z.string(),
-        role: z.enum(["user", "admin", "monitor", "aprendiz"]),
+        role: z.enum(["user", "admin", "monitor", "aprendiz", "corpo_docente"]),
         function: z.string()
       }))
       .mutation(async ({ input }) => {
@@ -63,7 +63,7 @@ export const appRouter = router({
         requestId: z.number(),
         name: z.string().optional(),
         password: z.string().optional(),
-        role: z.enum(["user", "admin", "monitor", "aprendiz"]).optional(),
+        role: z.enum(["user", "admin", "monitor", "aprendiz", "corpo_docente"]).optional(),
         function: z.string().optional()
       }))
       .mutation(async ({ input }) => {
@@ -117,7 +117,7 @@ export const appRouter = router({
     create: protectedProcedure
       .input(z.object({
         name: z.string(),
-        role: z.enum(["user", "admin", "monitor", "aprendiz"])
+        role: z.enum(["user", "admin", "monitor", "aprendiz", "corpo_docente"])
       }))
       .mutation(async ({ input }) => {
         return await createUser(input);
@@ -146,7 +146,7 @@ export const appRouter = router({
     updateRole: protectedProcedure
       .input(z.object({
         id: z.number(),
-        role: z.enum(["user", "admin", "monitor", "aprendiz"])
+        role: z.enum(["user", "admin", "monitor", "aprendiz", "corpo_docente"])
       }))
       .mutation(async ({ input }) => {
         return await updateUserRole(input.id, input.role);
